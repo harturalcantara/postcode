@@ -1,7 +1,7 @@
 import React from "react";
 import { auth, provider } from "../../services/firebase";
-import "./css/main.css";
-import "./css/util.css";
+import "./main.css";
+import "./util.css";
 
 const Login = () => {
   const handleSignin = () => {
@@ -78,9 +78,6 @@ const Login = () => {
 
       <div id="dropDownSelect1"></div>
     </>
-    /*<C.Container>
-      <C.Button onClick={handleSignin}>Login com Google</C.Button>
-    </C.Container>*/
   );
 };
 

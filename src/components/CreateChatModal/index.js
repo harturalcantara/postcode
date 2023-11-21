@@ -61,7 +61,7 @@ const CreateChatModal = ({
             </ul>
           )}
 
-          <input
+          <input 
             placeholder="Email do Usuário"
             onChange={handleInputChange}
             value={newEmail}

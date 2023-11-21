@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { db } from "../../services/firebase";
-import * as C from "./styles";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
+import "./styles.css";
 
 const ChatBody = ({ chatId }) => {
   const [messagesRes] = useCollection(
@@ -23,7 +23,7 @@ const ChatBody = ({ chatId }) => {
   }, [messagesRes]);
 
   return (
-    <C.Container ref={refBody}>
+    <div className="container-body" ref={refBody}>
       {messagesRes?.docs.map((message) => (
         <Message
           key={message.id}
@@ -34,7 +34,7 @@ const ChatBody = ({ chatId }) => {
           }}
         />
       ))}
-    </C.Container>
+    </div>
   );
 };
 

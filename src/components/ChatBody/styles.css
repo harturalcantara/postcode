@@ -1,0 +1,15 @@
+.container-body {
+  flex: 1;
+  background-color: #efeae2;
+  overflow-y: auto;
+}
+
+.container-body::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 10px;
+}
+
+.container-body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+}

@@ -1,15 +1,14 @@
 # Postcode
 
-Um simples chat de comunicação utilizando ReactJS e Firebase.
+A simple communication chat using ReactJS and Firebase.
 
 ## Before start
 
-1. Node.js instalado.
+1. Node.js installed.
 
-2. Gerenciador de pacotes ``` yarn ```.
+2. ``` Yarn ``` package manager.
 
-## Comandos iniciar
-
+## Star
 
 In the project directory, you can run:
 

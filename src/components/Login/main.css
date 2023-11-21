@@ -11,7 +11,7 @@
 }
 
 .container-login100 {
-  background-image: url('/src/components/Login/images/bg-01.jpg'); /* Caminho relativo ao diretório "public" */
+  background-image: url('../../../public/images/bg-01.jpg'); /*    /src/components/Login/images/bg-01.jpg Caminho relativo ao diretório "public" */
   background-size: cover;
   background-repeat: no-repeat;
   height: 100vh;

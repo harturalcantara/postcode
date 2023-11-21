@@ -26,7 +26,7 @@ const SidebarChatsItem = ({ id, users, user, setUserChat, active }) => {
   const getAvatar = () => {
     if(users.length > 2) {
       // return Avatar?.photoURL
-      return "https://i.imgur.com/8hIpVzX.png"
+      return "https://i.imgur.com/5hdeXEP.png"
     } else {
       return Avatar?.photoURL
     }
