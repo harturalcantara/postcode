@@ -1,8 +1,8 @@
 import React from "react";
 import * as C from "./styles";
-import { MdPerson, MdDelete, MdSearch } from "react-icons/md";
+import { MdPerson } from "react-icons/md";
 
-const ChatHeader = ({ photoURL, name }) => {
+const ChatHeader = ({ photoURL, name , someState}) => {
   return (
     <C.Container>
       <C.UserInfo>
@@ -12,8 +12,15 @@ const ChatHeader = ({ photoURL, name }) => {
         </C.NameContent>
       </C.UserInfo>
       <C.Options>
-        <MdSearch />
-        <MdDelete />
+        <form class="example" action="action_page.php">
+          <input type="text" placeholder="Search.." name="search" />
+          <button type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+          <button style={{ marginLeft: "20px" }} type="submit">
+            <i className="fa fa-trash"></i>
+          </button>
+        </form>
       </C.Options>
     </C.Container>
   );

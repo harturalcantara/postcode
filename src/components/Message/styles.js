@@ -42,12 +42,3 @@ export const MessageDate = styled.span`
     text-align: right;
   }
 `;
-
-/*
-export const MessageDateOnline = styled.span`
-  font-size: 11px;
-  color: #999;
-  text-align: right;
-  height: 15px;
-  margin: -5px 5px 0;
-`;*/

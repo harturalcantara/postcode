@@ -11,7 +11,7 @@ const Message = ({ user, message }) => {
       <C.Line className={userLoggedIn?.email === user ? "me" : ""}>
         <C.Content className={userLoggedIn?.email === user ? "me" : ""}>
           <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
-          <b>{user.split("@")[0]} </b>
+          <b style={{margin:20}}>@{user.split("@")[0]} </b>
           </C.MessageDate>
           <C.Message>{message.message}</C.Message>
           <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
