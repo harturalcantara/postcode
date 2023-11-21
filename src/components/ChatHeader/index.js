@@ -1,8 +1,16 @@
-import React from "react";
+import {React, useState} from "react";
 import * as C from "./styles";
 import { MdPerson } from "react-icons/md";
 
-const ChatHeader = ({ photoURL, name , someState}) => {
+const ChatHeader = ({ photoURL, name, setSomeState }) => {
+  const [searchInput, setSearchInput] = useState("");
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    setSomeState(searchInput);
+    setSearchInput("");
+  };
+
   return (
     <C.Container>
       <C.UserInfo>
@@ -12,15 +20,21 @@ const ChatHeader = ({ photoURL, name , someState}) => {
         </C.NameContent>
       </C.UserInfo>
       <C.Options>
-        <form class="example" action="action_page.php">
-          <input type="text" placeholder="Search.." name="search" />
+        <form onSubmit={handleSearchSubmit} className="example">
+          <input
+            type="text"
+            placeholder="Search.."
+            name="search"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
           <button type="submit">
             <i class="fa fa-search"></i>
           </button>
-          <button style={{ marginLeft: "20px" }} type="submit">
+        </form>
+        <button type="submit">
             <i className="fa fa-trash"></i>
           </button>
-        </form>
       </C.Options>
     </C.Container>
   );

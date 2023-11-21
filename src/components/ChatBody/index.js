@@ -4,7 +4,9 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
 import "./styles.css";
 
-const ChatBody = ({ chatId }) => {
+const ChatBody = ({ chatId, someState, setSomeState }) => {
+  console.log('eleeeee:', someState);
+
   const [messagesRes] = useCollection(
     db
       .collection("chats")
@@ -21,6 +23,20 @@ const ChatBody = ({ chatId }) => {
         refBody.current.scrollHeight - refBody.current.offsetHeight;
     }
   }, [messagesRes]);
+
+  // Filtra as mensagens com base no someState
+  const filteredMessages =
+    messagesRes?.docs?.filter((message) =>
+      message.data().message.includes(someState)
+    ) || [];
+
+  // Limpa o estado de someState quando há mensagens filtradas
+  useEffect(() => {
+    if (someState !== "" && filteredMessages.length > 0) {
+      setSomeState("");
+    }
+  }, [filteredMessages, setSomeState, someState]);
+
 
   return (
     <div className="container-body" ref={refBody}>
