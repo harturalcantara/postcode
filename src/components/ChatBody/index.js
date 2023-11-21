@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { db } from "../../services/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
 import "./styles.css";
+import { message } from "antd";
 
 const ChatBody = ({ chatId, someState, setSomeState }) => {
   console.log('eleeeee:', someState);
+  const [filteredMessages, setFilteredMessages] = useState()
 
   const [messagesRes] = useCollection(
     db
@@ -18,38 +20,55 @@ const ChatBody = ({ chatId, someState, setSomeState }) => {
   const refBody = useRef("");
 
   useEffect(() => {
+    console.log("ENEJENE")
     if (refBody.current.scrollHeight > refBody.current.offsetHeight) {
       refBody.current.scrollTop =
         refBody.current.scrollHeight - refBody.current.offsetHeight;
     }
-  }, [messagesRes]);
 
-  // Filtra as mensagens com base no someState
-  const filteredMessages =
-    messagesRes?.docs?.filter((message) =>
-      message.data().message.includes(someState)
-    ) || [];
+    console.log("STATE", someState)
 
-  // Limpa o estado de someState quando há mensagens filtradas
-  useEffect(() => {
-    if (someState !== "" && filteredMessages.length > 0) {
-      setSomeState("");
+
+    console.log("messages: ", messagesRes)
+    if(messagesRes?.docs) {
+      setFilteredMessages(
+        messagesRes.docs?.filter((m) => {
+          return m.data().message.toLowerCase().includes  (someState)
+        }
+      ));
     }
-  }, [filteredMessages, setSomeState, someState]);
+    
+  }, [someState]);
 
+  const getMessage = (m) =>  {
+    return (
+      <Message
+        key={m.id}
+        user={m.data().user}
+        message={{
+          message: m.data().message,
+          timestamp: m.data().timestamp?.toDate().getTime(),
+        }}
+      />
+    )
+  }
+
+  console.log('resultado da filtragem:', filteredMessages);
 
   return (
     <div className="container-body" ref={refBody}>
-      {messagesRes?.docs.map((message) => (
-        <Message
-          key={message.id}
-          user={message.data().user}
-          message={{
-            message: message.data().message,
-            timestamp: message.data().timestamp?.toDate().getTime(),
-          }}
-        />
-      ))}
+      {
+      filteredMessages? 
+
+        filteredMessages?.map((message) => (
+          getMessage(message)
+        )) : 
+      
+        messagesRes?.docs.map(((message) => (
+          getMessage(message)
+        )))
+    
+    }
     </div>
   );
 };

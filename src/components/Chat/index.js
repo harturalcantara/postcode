@@ -6,7 +6,7 @@ import ChatFooter from "../ChatFooter";
 import "./styles.css";
 
 const Chat = ({ userChat }) => {
-  const [someState, setSomeState] = useState([]);
+  const [someState, setSomeState] = useState("");
  
   if (!userChat) return <Default />;
 
