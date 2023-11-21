@@ -9,14 +9,13 @@ const Message = ({ user, message }) => {
   return (
     <C.Container>
       <C.Line className={userLoggedIn?.email === user ? "me" : ""}>
-        <C.Content>
-          <C.MessageDate>
-          <b>{user.split("@")[0]}</b>
+        <C.Content className={userLoggedIn?.email === user ? "me" : ""}>
+          <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
+          <b>{user.split("@")[0]} </b>
           </C.MessageDate>
           <C.Message>{message.message}</C.Message>
-          <C.MessageDate>
-             - 
-            {new Date(message?.timestamp).toLocaleString()}
+          <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
+            at {new Date(message?.timestamp).toLocaleString()}
           </C.MessageDate>
         </C.Content>
       </C.Line>

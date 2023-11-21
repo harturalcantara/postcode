@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "antd";
+import './styles.css';
 
 const CreateChatModal = ({
   isOpen,
@@ -61,8 +62,9 @@ const CreateChatModal = ({
             </ul>
           )}
 
-          <input 
-            placeholder="Email do Usuário"
+          <input
+            className=".custom-input" 
+            placeholder="Email from user to chat..."
             onChange={handleInputChange}
             value={newEmail}
           ></input>

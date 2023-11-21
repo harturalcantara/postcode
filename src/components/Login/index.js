@@ -44,7 +44,7 @@ const Login = () => {
                 <button className="login100-form-btn">Sign In</button>
               </div>
 
-              <span className="login100-form-title p-b-30 m-t-30"><center> <h4> Sign In With </h4> </center></span>
+              <span className="login100-form-title p-b-30 m-t-30"><center> <h5> Sign In With </h5> </center></span>
               
 
               <a href="https://www.example.com" className="btn-face m-b-20">

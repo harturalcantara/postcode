@@ -22,6 +22,8 @@ export const Content = styled.div`
   flex-direction: column;
   padding: 3px;
   max-width: 80%;
+  text-align: left;
+
 `;
 
 export const Message = styled.span`
@@ -32,7 +34,20 @@ export const Message = styled.span`
 export const MessageDate = styled.span`
   font-size: 11px;
   color: #999;
+  text-align: left;
+  height: 15px;
+  margin: -5px 5px 0;
+
+  &.me {
+    text-align: right;
+  }
+`;
+
+/*
+export const MessageDateOnline = styled.span`
+  font-size: 11px;
+  color: #999;
   text-align: right;
   height: 15px;
   margin: -5px 5px 0;
-`;
+`;*/
