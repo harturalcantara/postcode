@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Button, Modal, Form } from "antd";
-import './styles.css';
+import { Modal, Form } from "antd";
+import "./styles.css";
 
 const CreateChatModal = ({
   isOpen,
@@ -12,13 +12,9 @@ const CreateChatModal = ({
   const [form] = Form.useForm();
   const [newEmail, setNewEmail] = useState("");
 
-  // const isDisabled = (i) => {
-  //   return emailAmount > 1 &&
-  // }
-
   const handleInputChange = (e) => {
     setNewEmail(e.target.value);
-  }; 
+  };
 
   const handleAddNewContact = () => {
     if (newEmail) {
@@ -53,25 +49,35 @@ const CreateChatModal = ({
       <h3> Start a new chat </h3>
 
       <Form form={form}>
-        <div className="email-list">
+        <div className="email-list m-t-16">
           {emails && (
             <ul>
               {emails.map((email) => {
-                return <li key={email}>{email}</li>;
+                return (
+                  <li key={email}>
+                    {" "}
+                    <h5>{email}</h5>{" "}
+                  </li>
+                );
               })}
             </ul>
           )}
-
+        </div>
+        <div className="wrap-input100 validate-input m-t-27">
           <input
-            className=".custom-input" 
-            placeholder="Email from user to chat..."
+            className="input100"
             onChange={handleInputChange}
             value={newEmail}
-          ></input>
+            placeholder="Write the e-mail to start chat..."
+          />
+          <span className="focus-input100"></span>
+        </div>
 
-          <Button className="add-user" onClick={handleAddNewContact}>
-            Add another
-          </Button>
+        <div className="container-login100-form-btn m-t-17 p-l-80 p-r-80">
+          <button className="login100-form-btn" onClick={handleAddNewContact}>
+            {" "}
+            Add user{" "}
+          </button>
         </div>
       </Form>
     </Modal>
