@@ -54,3 +54,13 @@ export const Options = styled.div`
     cursor: pointer;
   }
 `;
+
+export const MessageActions = styled.span`
+  p {
+    color: gray;
+  }
+  p:hover {
+    color: black;
+    cursor: pointer;
+  }
+`;

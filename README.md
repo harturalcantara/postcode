@@ -1,14 +1,13 @@
 # Postcode
-
 A simple communication chat using ReactJS and Firebase.
 
-## Before start
+## Before you start
 
 1. Node.js installed.
 
 2. ``` Yarn ``` package manager.
 
-## Star
+## Get Started
 
 In the project directory, you can run:
 
@@ -16,61 +15,61 @@ In the project directory, you can run:
 
 ``` yarn start ```
 
+Runs the app in development mode. Open http://localhost:3000 to view it in your browser.
 
-Executa a aplicação em modo de tesde de desenvolvimento.\
-Abra [http://localhost:3000](http://localhost:3000) para ver em seu navegador.
+## Product
 
-## Produto
+Instant messaging software. The user will send messages in the format of text, image, animation, video, and audio. A user account is required to use the program. The account will have a name, email, avatar, and a description.
 
-Software de envio de mensagens instantâneas. O usuário enviará mensagens no formato de texto, imagem, animação, video e aúdio. Uma conta de usuário é necessária para utilização do programa. A conta terá nome, email, avatar e uma descrição.
+A message has the following data:
 
-Uma mensagem tem os seguintes dados:
+- Sending date;
+- Sending time;
+- Receipt date;
+- Receipt time;
+- Sender;
+- Recipient;
+- Status: sent, received, and viewed;
+- Content: text, image, animation, video, or audio.
 
-- data de envio;
-- horário de envio;
-- data de recebimento;
-- horário de recebimento;
-- emissor;
-- destinatário;
-- status: enviada, recebida e vista;
-- conteúdo: texto, imagem, animação, video ou áudio.
+## Features
 
-## Funcionalidades
+The program features are:
 
-As funcionalidades do programa são:
-1. Criação de conta;
-2. Login;
-3. Logout;
-4. Edição de conta;
-5. Remoção de conta;
-6. Envio e recebimento de mensagem;
-7. visualização de mensagem;
-8. remoção de mensagem;
-9. busca por mensagem;
-10. Grupo de usuários para troca de mensagens, onde um ou mais usuários serão administradores
-do grupo e poderão adicionar ou remover usuários do grupo.
+- Account creation;
+- Login;
+- Logout;
+- Account editing;
+- Account removal;
+- Sending and receiving messages;
+- Message viewing;
+- Message removal;
+- Message search;
+- User group for message exchange, where one or more users will be group administrators and can add or remove users from the group.
 
-O grupo deve elaborar os seguintes diagramas UML do sistema:
-- classe;
-- pacote;
-- caso de uso;
-- sequência;
-- máquina de estados ou transição de estados.
+The group should elaborate on the following UML diagrams of the system:
 
-Em seguida, implementar (ou reestruturar) o código do sistema utilizando os princípios SOLID da orientação a objetos.
+- Class;
+- Package;
+- Use case;
+- Sequence;
+- State machine or state transition.
 
-É permitida utilização de qualquer framework para manipulação do BD e emprego de qualquer SGBD.
+Next, implement (or restructure) the system code using the SOLID principles of object-oriented programming.
 
-O grupo deve usar apenas as funções básicas de comunicação em redes disponíveis na linguagem de programação utilizada. Não é permitida utilização de qualquer framework, API ou biblioteca já pronta com recursos para comunicação em redes de computadores.
+The use of any framework for database manipulation is allowed, as well as the use of any database management system.
 
-Caso o sistema seja implementado usando programação funcional, a equipe não precisa implementar a funcionalidade 10.
+The group should use only the basic network communication functions available in the chosen programming language. The use of any ready-made framework, API, or library with features for computer network communication is not allowed.
 
-## Metodologia
+If the system is implemented using functional programming, the team does not need to implement functionality 10.
 
-Definição dos requisitos do programa;
-- Elaboração dos diagramas UML;
-- Elaboração do modelo das tabelas do banco de dados;
-- Criação do protótipo;
-- Testes com usuários;
-- Ajustes no protótipo;
-- Correções de erros e problemas.
+## Methodology
+
+Definition of program requirements;
+
+- Elaboration of UML diagrams;
+- Elaboration of the database table model;
+- Prototype creation;
+- User testing;
+- Prototype adjustments;
+- Correction of errors and issues.

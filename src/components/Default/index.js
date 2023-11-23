@@ -1,6 +1,6 @@
 import React from "react";
 import * as C from "./styles";
-import MinhaImagem from './icons8-chat-room-color-glass-96.png';
+import MinhaImagem from '../../images/icons8-chat-room-color-glass-96.png';
 
 const Default = () => {
   return (

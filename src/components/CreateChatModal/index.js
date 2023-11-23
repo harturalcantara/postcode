@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal, Form } from "antd";
-import "./styles.css";
 
 const CreateChatModal = ({
   isOpen,

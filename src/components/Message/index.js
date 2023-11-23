@@ -3,15 +3,10 @@ import * as C from "./styles";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../services/firebase";
 import { db } from "../../services/firebase";
-import {
-  MdExpandMore,
-  //MdFormatAlignLeft,
-  //MdFormatAlignRight,
-} from "react-icons/md";
+import { MdExpandMore } from "react-icons/md";
 
 const Message = ({ editMessage, setMessageEdit, setEditMode, user, message, chatId, setEditionMode, setMessageEdition}) => {
   const [userLoggedIn] = useAuthState(auth);
-  console.log('mensagem:', message);
 
   // const updateUserData = async (userId, newData) => {
   //   try {
@@ -60,13 +55,13 @@ const Message = ({ editMessage, setMessageEdit, setEditMode, user, message, chat
 
     useEffect(() => {
       if (isOpen) {
-        // Ajuste a posição do dropdown com base no clique
+
         if (position) {
           const { x, y } = position;
           dropdownRef.current.style.position = "absolute";
           dropdownRef.current.style.left = `${x - 140}px`;
           dropdownRef.current.style.top = `${y}px`;
-          dropdownRef.current.style.zIndex = 1000; // Ajuste conforme necessário
+          dropdownRef.current.style.zIndex = 1000;
         }
       }
     }, [isOpen, position]);

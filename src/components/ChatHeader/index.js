@@ -1,28 +1,39 @@
 import { React, useState } from "react";
 import * as C from "./styles";
 import { MdPerson } from "react-icons/md";
-import iconEllipsis from "./icon_ellipsis_vertical.png";
+import iconEllipsis from "../../images/icon_ellipsis_vertical.png";
 import { db } from "../../services/firebase";
+import { Modal } from "antd";
 
-
-
-const ChatHeader = ({ photoURL, name, setSomeState, chatIdToDelete }) => {
+const ChatHeader = ({ photoURL, name, email, uid, setSomeState, chatIdToDelete }) => {
+  console.log('chat', name, email, uid)
   const [searchInput, setSearchInput] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
 
   console.log(chatIdToDelete);
-  
-  const deleteUserData = async ( ) => {
+
+  const deleteUserData = async () => {
     try {
       // Reference to the user document
       const userRef = db.collection("chats").doc(chatIdToDelete);
-  
       // Delete the user document
       await userRef.delete();
-  
+
       alert(`User with ID ${chatIdToDelete} deleted successfully!`);
       chatIdToDelete = null;
       window.location.reload(true);
-      
     } catch (error) {
       alert("Error deleting user:", error.message);
     }
@@ -37,13 +48,13 @@ const ChatHeader = ({ photoURL, name, setSomeState, chatIdToDelete }) => {
   const DropdownMenu = ({ isOpen, onClose }) => {
     // O conteúdo do dropdown vai aqui
     return (
-      <div
+      <C.MessageActions
         style={{
           display: isOpen ? "block" : "none",
           position: "absolute",
           width: "132px",
-          top: "32px",  // Ajuste conforme necessário
-          right: "0",   // Ajuste conforme necessário
+          top: "32px", // Ajuste conforme necessário
+          right: "0", // Ajuste conforme necessário
           backgroundColor: "#fff",
           border: "2px solid #ccc",
           padding: "16px",
@@ -53,7 +64,7 @@ const ChatHeader = ({ photoURL, name, setSomeState, chatIdToDelete }) => {
         <p onClick={deleteUserData}> Delete chat</p>
         <hr></hr>
         <p>Sair</p>
-      </div>
+      </C.MessageActions>
     );
   };
 
@@ -66,7 +77,33 @@ const ChatHeader = ({ photoURL, name, setSomeState, chatIdToDelete }) => {
   return (
     <C.Container>
       <C.UserInfo>
-        {photoURL ? <C.Avatar src={photoURL} alt="Avatar" /> : <MdPerson />}
+        {photoURL ? <C.Avatar src={photoURL} alt="Avatar" onClick={showModal} /> : <MdPerson />}
+        <Modal
+          title="Perfil"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <div style={{ textAlign: "center" }}>
+            <C.Avatar src={photoURL} />
+            <h4>
+              <b> {name} </b>
+            </h4>
+            <hr></hr>
+            <p>
+              {" "}
+              <b>Email: {email} </b>{" "}
+            </p>
+            <p>
+              {" "}
+              <b>UID: {uid} </b>{" "}
+            </p>
+            <p>
+              {" "}
+              <b>Descrição:</b> ...{" "}
+            </p>
+          </div>
+        </Modal>
         <C.NameContent>
           <C.Name>{name}</C.Name>
         </C.NameContent>
@@ -74,38 +111,40 @@ const ChatHeader = ({ photoURL, name, setSomeState, chatIdToDelete }) => {
       <C.Options>
         <form onSubmit={handleSearchSubmit}>
           <div className="wrap-input100 validate-input">
-          <input
-            className="input100"
-            onChange={(e) => setSearchInput(e.target.value)}
-            style={{
-              width: "250px",
-              height: "42px",
-              paddingLeft: "35px",
-              backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
-              backgroundPosition: "10px 50%",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "20px 20px",
-            }}
-            value={searchInput}
-            placeholder="Search message..."
-          />
+            <input
+              className="input100"
+              onChange={(e) => setSearchInput(e.target.value)}
+              style={{
+                width: "250px",
+                height: "42px",
+                paddingLeft: "35px",
+                backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
+                backgroundPosition: "10px 50%",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "20px 20px",
+              }}
+              value={searchInput}
+              placeholder="Search message..."
+            />
             <span className="focus-input100"></span>
           </div>
         </form>
         <div style={{ position: "relative" }}>
-        <img
-          style={{ cursor: "pointer" }}
-          className="m-t-10"
-          width={"24px"}
-          height={"24px"}
-          src={iconEllipsis}
-          alt="options"
-          onClick={handleDropdownClick}
-        />
-        
-        <DropdownMenu isOpen={isDropdownOpen} onClose={() => setDropdownOpen(false)} />
-      </div>
-        {/* <img style={{ cursor: "pointer" }} className="m-t-10" width={"24px"} height={"24px"} src={iconEllipsis} alt="options"></img> */}
+          <img
+            style={{ cursor: "pointer" }}
+            className="m-t-10"
+            width={"24px"}
+            height={"24px"}
+            src={iconEllipsis}
+            alt="options"
+            onClick={handleDropdownClick}
+          />
+
+          <DropdownMenu
+            isOpen={isDropdownOpen}
+            onClose={() => setDropdownOpen(false)}
+          />
+        </div>
       </C.Options>
     </C.Container>
   );

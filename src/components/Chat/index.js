@@ -1,10 +1,10 @@
 import {React, useState} from "react";
+import * as C from "./styles";
 import ChatHeader from "../ChatHeader";
 import Default from "./../Default";
 import ChatBody from "../ChatBody";
 import ChatFooter from "../ChatFooter";
 import { db } from "../../services/firebase";
-import "./styles.css";
 
 const Chat = ({ userChat }) => {
   const [someState, setSomeState] = useState("");
@@ -27,11 +27,11 @@ const Chat = ({ userChat }) => {
   }
 
   return (
-    <div className="container-chat">
-      <ChatHeader photoURL={userChat?.photoURL} name={userChat?.name} setSomeState={setSomeState} chatIdToDelete={userChat?.chatId} />
+    <C.Container>
+      <ChatHeader photoURL={userChat?.photoURL} name={userChat?.name} email={userChat?.email} uid={userChat?.uid} setSomeState={setSomeState} chatIdToDelete={userChat?.chatId} />
       <ChatBody editMessage={editMessage} chatId={userChat?.chatId} setEditMode={setEditMode} setMessageEdit={setMessageEdit} someState={someState} setSomeState={setSomeState} />
       <ChatFooter editMessage={editMessage} editMode={editMode} setEditMode={setEditMode} messageEdit={messageEdit} setMessageEdit={setMessageEdit} chatId={userChat?.chatId} />
-    </div>
+    </C.Container>
   );
 };
 

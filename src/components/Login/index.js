@@ -2,7 +2,7 @@ import React from "react";
 import { auth, provider } from "../../services/firebase";
 import "./main.css";
 import "./util.css";
-import MinhaImagem from "./icons8-chat-room-color-glass-96.png";
+import MinhaImagem from "../../images/icons8-chat-room-color-glass-96.png";
 
 const Login = () => {
   const handleSignin = () => {
