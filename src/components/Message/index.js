@@ -4,43 +4,50 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../services/firebase";
 import { db } from "../../services/firebase";
 import { MdExpandMore } from "react-icons/md";
+//import { Icon } from 'antd'
+import { CheckOutlined } from "@ant-design/icons";
 
-const Message = ({ editMessage, setMessageEdit, setEditMode, user, message, chatId, setEditionMode, setMessageEdition}) => {
+const Message = ({
+  editMessage,
+  setMessageEdit,
+  setEditMode,
+  user,
+  message,
+  chatId,
+  setEditionMode,
+  setMessageEdition,
+}) => {
   const [userLoggedIn] = useAuthState(auth);
 
-  // const updateUserData = async (userId, newData) => {
-  //   try {
-  //     // Reference to the user document
-  //     const userRef = db.collection("chats").doc(userId);
-
-  //     // Update the user document
-  //     await userRef.update(newData);
-
-  //     console.log(`User with ID ${userId} updated successfully`);
-  //   } catch (error) {
-  //     console.error("Error updating user:", error.message);
-  //   }
-  // };
-
   const deleteMessage = async () => {
-    console.log("wew")
-     // Query to find documents based on the specified field value
-     const querySnapshot = await db.collection("chats").doc(chatId).collection("messages").where("id", '==', message.id).get();
+    console.log("wew");
+    // Query to find documents based on the specified field value
+    const querySnapshot = await db
+      .collection("chats")
+      .doc(chatId)
+      .collection("messages")
+      .where("id", "==", message.id)
+      .get();
 
-     // Iterate over the query results and delete each document
-     const deletePromises = querySnapshot.docs.map(async (doc) => {
-       await db.collection("chats").doc(chatId).collection("messages").doc(doc.id).delete();
-       console.log(`Document with ID ${doc.id} deleted successfully.`);
-     });
+    // Iterate over the query results and delete each document
+    const deletePromises = querySnapshot.docs.map(async (doc) => {
+      await db
+        .collection("chats")
+        .doc(chatId)
+        .collection("messages")
+        .doc(doc.id)
+        .delete();
+      console.log(`Document with ID ${doc.id} deleted successfully.`);
+    });
 
     // Wait for all delete operations to complete
     await Promise.all(deletePromises);
-  }
+  };
 
   const triggerEdition = async () => {
-    setEditMode(true)
-    setMessageEdit(message)
-  }
+    setEditMode(true);
+    setMessageEdit(message);
+  };
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
@@ -55,7 +62,6 @@ const Message = ({ editMessage, setMessageEdit, setEditMode, user, message, chat
 
     useEffect(() => {
       if (isOpen) {
-
         if (position) {
           const { x, y } = position;
           dropdownRef.current.style.position = "absolute";
@@ -112,8 +118,14 @@ const Message = ({ editMessage, setMessageEdit, setEditMode, user, message, chat
           </C.MessageDate>
 
           <C.Message>{message.message} </C.Message>
+
           <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
-            at {new Date(message?.timestamp).toLocaleString()}
+                at {new Date(message?.timestamp).toLocaleString()}
+                {' '}
+                {userLoggedIn?.email === user && (
+              <CheckOutlined type="check" />
+            )}
+                
           </C.MessageDate>
         </C.Content>
       </C.Line>

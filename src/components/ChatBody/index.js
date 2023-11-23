@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { db } from "../../services/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
-import "./styles.css";
+import * as C from "./styles";
 
 const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState, setSomeState }) => {
   const [filteredMessages, setFilteredMessages] = useState();
@@ -51,11 +51,11 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
   };
 
   return (
-    <div className="container-body" ref={refBody}>
+    <C.Container ref={refBody}>
       {filteredMessages
         ? filteredMessages?.map((message) => getMessage(message))
         : messagesRes?.docs.map((message) => getMessage(message))}
-    </div>
+    </C.Container>
   );
 };
 

@@ -52,3 +52,16 @@ export const MessageDate = styled.span`
     text-align: right;
   }
 `;
+
+export const flexContainer = styled.span`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const leftContent = styled.span`
+  align-self: flex-start;
+`;
+
+export const rightContent = styled.span`
+  align-self: flex-end;
+`;
