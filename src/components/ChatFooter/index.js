@@ -6,11 +6,17 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/compat/app";
 import { v4 as uuidv4 } from 'uuid';
 
-const ChatFooter = ({ chatId }) => {
+const ChatFooter = ({ editMessage, messageEdit, setMessageEdit, setEditMode, editMode, chatId }) => {
   const [user] = useAuthState(auth);
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (e) => {
+    if(editMode) {
+      editMessage(messageEdit)
+      setEditMode(false)
+      return
+    }
+
     e.preventDefault();
 
     db.collection("chats").doc(chatId).collection("messages").add({
@@ -29,8 +35,15 @@ const ChatFooter = ({ chatId }) => {
       <C.Form onSubmit={handleSendMessage}>
         <C.Input
           placeholder="Type a message..."
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
+          onChange={(e) => {
+            if(editMode) {
+              setMessageEdit({...messageEdit, message: e.target.value})
+            }
+            else {
+              setMessage(e.target.value)
+            }
+          }}
+          value={editMode ? messageEdit.message :  message }
         />
         <MdSend onClick={handleSendMessage} />
       </C.Form>

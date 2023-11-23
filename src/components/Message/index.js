@@ -9,23 +9,23 @@ import {
   //MdFormatAlignRight,
 } from "react-icons/md";
 
-const Message = ({ user, message, chatId }) => {
+const Message = ({ editMessage, setMessageEdit, setEditMode, user, message, chatId, setEditionMode, setMessageEdition}) => {
   const [userLoggedIn] = useAuthState(auth);
   console.log('mensagem:', message);
 
-  const updateUserData = async (userId, newData) => {
-    try {
-      // Reference to the user document
-      const userRef = db.collection("chats").doc(userId);
+  // const updateUserData = async (userId, newData) => {
+  //   try {
+  //     // Reference to the user document
+  //     const userRef = db.collection("chats").doc(userId);
 
-      // Update the user document
-      await userRef.update(newData);
+  //     // Update the user document
+  //     await userRef.update(newData);
 
-      console.log(`User with ID ${userId} updated successfully`);
-    } catch (error) {
-      console.error("Error updating user:", error.message);
-    }
-  };
+  //     console.log(`User with ID ${userId} updated successfully`);
+  //   } catch (error) {
+  //     console.error("Error updating user:", error.message);
+  //   }
+  // };
 
   const deleteMessage = async () => {
     console.log("wew")
@@ -42,25 +42,9 @@ const Message = ({ user, message, chatId }) => {
     await Promise.all(deletePromises);
   }
 
-  // const triggerEdition = async () => {
-  //   setEditionMode(true)
-  //   setEditingMessage(message)
-  // }
-
-  const editMessage = async () => {
-    // Query to find documents based on the specified field value
-    const querySnapshot = await db.collection("chats").doc(chatId).collection("messages").where("id", '==', message.id).get();
-
-    const updatedMessage = {...message, message: "UPDATED"}
-    // Iterate over the query results and delete each document
-    const editPromises = querySnapshot.docs.map(async (doc) => {
-      
-      await db.collection("chats").doc(chatId).collection("messages").doc(doc.id).update({message: "UPDATED"});
-      console.log(`Document with ID ${doc.id} deleted successfully.`);
-    });
-
-    // Wait for all delete operations to complete
-    await Promise.all(editPromises);
+  const triggerEdition = async () => {
+    setEditMode(true)
+    setMessageEdit(message)
   }
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -99,7 +83,7 @@ const Message = ({ user, message, chatId }) => {
           padding: "16px",
         }}
       >
-        <p onClick={editMessage}>Edit message</p>
+        <p onClick={triggerEdition}>Edit message</p>
         <hr />
         <p onClick={deleteMessage}>Delete message</p>
       </C.MessageActions>
