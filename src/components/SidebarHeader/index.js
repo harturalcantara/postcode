@@ -23,7 +23,6 @@ const SidebarHeader = ({ setUserChat }) => {
     setIsModalOpen(false);
   };
 
-
   const [user] = useAuthState(auth);
   const refChat = db
     .collection("chats")
@@ -79,15 +78,16 @@ const SidebarHeader = ({ setUserChat }) => {
 
   const updateProfile = () => {
     if (user) {
-      user.updateProfile({
-        displayName: 'Nome do Usuário',
-      })
-      .then(() => {
-        console.log('Perfil atualizado com sucesso!');
-      })
-      .catch((error) => {
-        console.error('Erro ao atualizar perfil:', error);
-      });
+      user
+        .updateProfile({
+          displayName: "Nome do Usuário",
+        })
+        .then(() => {
+          console.log("Perfil atualizado com sucesso!");
+        })
+        .catch((error) => {
+          console.error("Erro ao atualizar perfil:", error);
+        });
     }
   };
 
@@ -97,12 +97,12 @@ const SidebarHeader = ({ setUserChat }) => {
 
       if (user) {
         await user.delete();
-        console.log('User deleted successfully.');
+        console.log("User deleted successfully.");
       } else {
-        console.log('No user is currently signed in.');
+        console.log("No user is currently signed in.");
       }
     } catch (error) {
-      console.error('Error deleting user:', error.message);
+      console.error("Error deleting user:", error.message);
     }
   };
 
@@ -119,9 +119,7 @@ const SidebarHeader = ({ setUserChat }) => {
       )}
 
       <C.Container>
-        <C.Avatar
-          src={user?.photoURL}
-        />
+        <C.Avatar src={user?.photoURL} />
         <C.Options>
           <MdChat onClick={handleCreateChat} />
           <MdPerson onClick={showModal} />
@@ -132,12 +130,13 @@ const SidebarHeader = ({ setUserChat }) => {
             onCancel={handleCancel}
           >
             <div style={{ textAlign: "center" }}>
-              <C.Avatar src={user?.photoURL} />
+              <C.AvatarPerfil src={user?.photoURL} />
+              <h4><b>{user?.displayName}</b></h4>
+              <hr></hr>
+              <p> <b>Email:</b> {user?.email} </p>
+              <p> <b>UID:</b> {user.uid} </p>
+              <p> <b>Descrição:</b> ... </p>
             </div>
-            <p> Nome: {user?.displayName}</p>
-            <p> Email: {user?.email} </p>
-            <p> UID: {user.uid} </p>
-            <p> Descrição: ... </p>
             <div style={{ textAlign: "center" }}>
               <Button type="primary" info onClick={updateProfile}>
                 Atualizar Perfil

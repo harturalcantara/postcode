@@ -26,7 +26,7 @@ const ChatFooter = ({ chatId }) => {
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
         <C.Input
-          placeholder="Mensagem"
+          placeholder="Type a message..."
           onChange={(e) => setMessage(e.target.value)}
           value={message}
         />

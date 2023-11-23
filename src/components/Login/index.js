@@ -2,6 +2,7 @@ import React from "react";
 import { auth, provider } from "../../services/firebase";
 import "./main.css";
 import "./util.css";
+import MinhaImagem from "./icons8-chat-room-color-glass-96.png";
 
 const Login = () => {
   const handleSignin = () => {
@@ -12,7 +13,14 @@ const Login = () => {
       <div className="limiter">
         <div className="container-login100">
           <div className="wrap-login100 p-l-110 p-r-110 p-t-62 p-b-33">
-            <center> <h3> Postcode </h3> </center>
+            <center>
+              <img width={"48px"} src={MinhaImagem} alt="Postcode" />
+            </center>
+            <center>
+              <h3 className="m-t-8">
+                <b>Postcode </b>
+              </h3>
+            </center>
             <form className="login100-form validate-form flex-sb flex-w">
               <div className="p-t-31 p-b-9">
                 <span className="txt1">Username</span>
@@ -44,17 +52,21 @@ const Login = () => {
                 <button className="login100-form-btn">Sign In</button>
               </div>
 
-              <span className="login100-form-title p-b-30 m-t-30"><center> <h5> Sign In With </h5> </center></span>
-              
+              <span className="login100-form-title p-b-30 m-t-30">
+                <center>
+                  {" "}
+                  <h5> Sign In With </h5>{" "}
+                </center>
+              </span>
 
-              <a href="https://www.example.com" className="btn-face m-b-20">
+              <a href="https://www.example.com" className="btn-face m-b-8">
                 <i className="fa fa-facebook-official"></i>
                 Facebook
               </a>
 
               <a
                 href="https://www.example.com"
-                className="btn-google m-b-20"
+                className="btn-google m-b-8"
                 onClick={(e) => {
                   e.preventDefault(); // Evita a ação padrão de seguir o link
                   handleSignin(); // Chama a função handleSignin
@@ -64,11 +76,11 @@ const Login = () => {
                 <div className="m-l-20"> Google </div>
               </a>
 
-              <div className="w-full text-center p-t-55">
+              <div className="w-full text-center p-t-32">
                 <span className="txt2">Not a member?</span>
 
                 <a href="https://www.example.com" className="txt2 bo1 m-l-5">
-                   Sign up now
+                  Sign up now
                 </a>
               </div>
             </form>

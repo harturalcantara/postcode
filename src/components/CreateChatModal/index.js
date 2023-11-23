@@ -45,9 +45,9 @@ const CreateChatModal = ({
 
   return (
     <Modal open={isOpen} onCancel={handleCancel} onOk={handleOk}>
-      <button className="close-btn"></button>
       <h3> Start a new chat </h3>
-
+      <hr></hr>
+      <h5> User list to star a talk: </h5>
       <Form form={form}>
         <div className="email-list m-t-16">
           {emails && (
@@ -63,7 +63,8 @@ const CreateChatModal = ({
             </ul>
           )}
         </div>
-        <div className="wrap-input100 validate-input m-t-27">
+
+        <div className="wrap-input100 validate-input m-t-27" style={{ display: "flex" }}>
           <input
             className="input100"
             onChange={handleInputChange}
@@ -71,12 +72,8 @@ const CreateChatModal = ({
             placeholder="Write the e-mail to start chat..."
           />
           <span className="focus-input100"></span>
-        </div>
-
-        <div className="container-login100-form-btn m-t-17 p-l-80 p-r-80">
-          <button className="login100-form-btn" onClick={handleAddNewContact}>
-            {" "}
-            Add user{" "}
+          <button style={{ width: "100px" }} className="login100-form-btn" onClick={handleAddNewContact}>
+            Add
           </button>
         </div>
       </Form>

@@ -12,7 +12,7 @@ const Chat = ({ userChat }) => {
 
   return (
     <div className="container-chat">
-      <ChatHeader photoURL={userChat?.photoURL} name={userChat?.name} setSomeState={setSomeState} />
+      <ChatHeader photoURL={userChat?.photoURL} name={userChat?.name} setSomeState={setSomeState} chatIdToDelete={userChat?.chatId} />
       <ChatBody chatId={userChat?.chatId} someState={someState} setSomeState={setSomeState} />
       <ChatFooter chatId={userChat?.chatId} />
     </div>

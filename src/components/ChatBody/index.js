@@ -5,7 +5,6 @@ import Message from "../Message";
 import "./styles.css";
 
 const ChatBody = ({ chatId, someState, setSomeState }) => {
-  //console.log("eleeeee:", someState);
   const [filteredMessages, setFilteredMessages] = useState();
 
   const [messagesRes] = useCollection(
@@ -31,7 +30,7 @@ const ChatBody = ({ chatId, someState, setSomeState }) => {
         })
       );
     }
-  }, [someState, messagesRes]); //tirar aqui, o segundo termo
+  }, [someState, messagesRes]);
 
   const getMessage = (m) => {
     return (
@@ -45,8 +44,6 @@ const ChatBody = ({ chatId, someState, setSomeState }) => {
       />
     );
   };
-
-  //console.log("resultado da filtragem:", filteredMessages);
 
   return (
     <div className="container-body" ref={refBody}>

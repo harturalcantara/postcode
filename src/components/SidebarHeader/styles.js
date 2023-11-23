@@ -18,6 +18,13 @@ export const Avatar = styled.img`
   border-radius: 50%;
 `;
 
+export const AvatarPerfil = styled.img`
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  border-radius: 50%;
+`;
+
 export const Options = styled.div`
   display: flex;
   gap: 10px;

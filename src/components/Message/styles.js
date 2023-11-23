@@ -28,7 +28,7 @@ export const Content = styled.div`
 
 export const Message = styled.span`
   font-size: 14px;
-  margin: 5px 40px 5px 5px;
+  margin: 10px 50px 10px 10px;
 `;
 
 export const MessageDate = styled.span`
