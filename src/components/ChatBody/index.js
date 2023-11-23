@@ -3,6 +3,7 @@ import { db } from "../../services/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
 import "./styles.css";
+import { v4 as uuidv4 } from 'uuid';
 
 const ChatBody = ({ chatId, someState, setSomeState }) => {
   const [filteredMessages, setFilteredMessages] = useState();
@@ -38,9 +39,11 @@ const ChatBody = ({ chatId, someState, setSomeState }) => {
         key={m.id}
         user={m.data().user}
         message={{
+          id: m.data().id ?? "NOT DEFINED",
           message: m.data().message,
           timestamp: m.data().timestamp?.toDate().getTime(),
         }}
+        chatId={chatId}
       />
     );
   };

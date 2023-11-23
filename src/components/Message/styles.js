@@ -31,6 +31,16 @@ export const Message = styled.span`
   margin: 10px 50px 10px 10px;
 `;
 
+export const MessageActions = styled.span`
+  p {
+    color: gray;
+  }
+  p:hover {
+    color: black;
+    cursor: pointer;
+  }
+`;
+
 export const MessageDate = styled.span`
   font-size: 11px;
   color: #999;

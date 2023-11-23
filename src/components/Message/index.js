@@ -9,9 +9,10 @@ import {
   //MdFormatAlignRight,
 } from "react-icons/md";
 
-const Message = ({ user, message }) => {
+const Message = ({ user, message, chatId }) => {
   const [userLoggedIn] = useAuthState(auth);
-  console.log('mensagem:', message.uid, message.message);
+  console.log('mensagem:', message);
+
   const updateUserData = async (userId, newData) => {
     try {
       // Reference to the user document
@@ -25,6 +26,42 @@ const Message = ({ user, message }) => {
       console.error("Error updating user:", error.message);
     }
   };
+
+  const deleteMessage = async () => {
+    console.log("wew")
+     // Query to find documents based on the specified field value
+     const querySnapshot = await db.collection("chats").doc(chatId).collection("messages").where("id", '==', message.id).get();
+
+     // Iterate over the query results and delete each document
+     const deletePromises = querySnapshot.docs.map(async (doc) => {
+       await db.collection("chats").doc(chatId).collection("messages").doc(doc.id).delete();
+       console.log(`Document with ID ${doc.id} deleted successfully.`);
+     });
+
+    // Wait for all delete operations to complete
+    await Promise.all(deletePromises);
+  }
+
+  // const triggerEdition = async () => {
+  //   setEditionMode(true)
+  //   setEditingMessage(message)
+  // }
+
+  const editMessage = async () => {
+    // Query to find documents based on the specified field value
+    const querySnapshot = await db.collection("chats").doc(chatId).collection("messages").where("id", '==', message.id).get();
+
+    const updatedMessage = {...message, message: "UPDATED"}
+    // Iterate over the query results and delete each document
+    const editPromises = querySnapshot.docs.map(async (doc) => {
+      
+      await db.collection("chats").doc(chatId).collection("messages").doc(doc.id).update({message: "UPDATED"});
+      console.log(`Document with ID ${doc.id} deleted successfully.`);
+    });
+
+    // Wait for all delete operations to complete
+    await Promise.all(editPromises);
+  }
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
@@ -51,20 +88,21 @@ const Message = ({ user, message }) => {
     }, [isOpen, position]);
 
     return (
-      <div
+      <C.MessageActions
         ref={dropdownRef}
+        // onBlur={}
         style={{
           display: isOpen ? "block" : "none",
-          width: "132px",
+          width: "150px",
           backgroundColor: "#fff",
           border: "2px solid #ccc",
           padding: "16px",
         }}
       >
-        <p>Update chat</p>
+        <p onClick={editMessage}>Edit message</p>
         <hr />
-        <p>Delete chat</p>
-      </div>
+        <p onClick={deleteMessage}>Delete message</p>
+      </C.MessageActions>
     );
   };
 

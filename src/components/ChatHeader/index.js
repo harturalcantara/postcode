@@ -10,6 +10,7 @@ const ChatHeader = ({ photoURL, name, setSomeState, chatIdToDelete }) => {
   const [searchInput, setSearchInput] = useState("");
 
   console.log(chatIdToDelete);
+  
   const deleteUserData = async ( ) => {
     try {
       // Reference to the user document

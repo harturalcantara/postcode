@@ -4,6 +4,7 @@ import { MdSend } from "react-icons/md";
 import { auth, db } from "../../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/compat/app";
+import { v4 as uuidv4 } from 'uuid';
 
 const ChatFooter = ({ chatId }) => {
   const [user] = useAuthState(auth);
@@ -13,6 +14,7 @@ const ChatFooter = ({ chatId }) => {
     e.preventDefault();
 
     db.collection("chats").doc(chatId).collection("messages").add({
+      id: uuidv4(),
       message: message,
       user: user.email,
       photoURL: user.photoURL,
