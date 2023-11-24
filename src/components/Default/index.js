@@ -9,8 +9,7 @@ const Default = () => {
       <img src={MinhaImagem} alt="Postcode" />
       <C.Title>Postcode</C.Title>
       <C.Info>
-        Agora você pode enviar e receber mensagens sem precisar manter seu
-        celular conectado à internet.
+        Now you can send and receive messages without having to keep your cell phone connected to the internet.
       </C.Info>
     </C.Container>
   );

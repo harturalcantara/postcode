@@ -81,19 +81,8 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
     );
   };
 
-  const updateProfile = () => {
-    if (user) {
-      user
-        .updateProfile({
-          displayName: "Nome do Usuário",
-        })
-        .then(() => {
-          console.log("Perfil atualizado com sucesso!");
-        })
-        .catch((error) => {
-          console.error("Erro ao atualizar perfil:", error);
-        });
-    }
+  const updateUserProfile  = async () => {
+    
   };
 
   const [userLoggedIn] = useAuthState(auth);
@@ -123,20 +112,17 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
           .collection("messages")
           .get();
       
-        // Exclui cada documento da subcoleção "messages"
+        // Delete all "messages"
         messagesQuery.forEach(async (messageDoc) => {
           await messageDoc.ref.delete();
         });
       });
 
       userChatsQuery.forEach(async (chat) => {
-        //console.log('chat to delete:', chat)
         await chat.ref.delete();
       });
 
       console.log("Ms from system: Coleção 'chats' e 'messages' excluídos com sucesso!");
-      
-      
       await db.collection("users").doc(userLoggedIn.uid).delete();
       auth.signOut()
       setUserChat(null)
@@ -196,7 +182,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
               <p> <b> Description: </b> {userData?.description} </p>
             </div>
             <div style={{ textAlign: "center", marginTop: "20px" }}>
-              <Button type="primary" style={{ marginRight: "10px", backgroundColor: "#2e8b57" }} onClick={updateProfile}>
+              <Button type="primary" style={{ marginRight: "10px", backgroundColor: "#2e8b57" }} onClick={updateUserProfile}>
                 Update account
               </Button>
               <Button type="primary" style={{ backgroundColor: "#9c1111" }} onClick={deleteUserData}>

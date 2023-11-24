@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Modal, Form } from "antd";
+import { Modal, Form, Button } from "antd";
+import { MdControlPoint } from "react-icons/md";
 
 const CreateChatModal = ({
   isOpen,
@@ -43,14 +44,50 @@ const CreateChatModal = ({
   };
 
   return (
-    <Modal open={isOpen} onCancel={handleCancel} onOk={handleOk}>
+    <Modal
+      open={isOpen}
+      footer={[
+        <div key="buttons" style={{ textAlign: "center" }}>
+          <Button key="cancel" onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button key="ok" type="primary" onClick={handleOk}>
+            Ok
+          </Button>
+        </div>,
+      ]}
+    >
       <h3> Start a new chat </h3>
       <hr></hr>
-      <h5> User list to star a talk: </h5>
+      <h5 className=" m-t-8">
+        Enter your email to start a conversation, add more than one email to
+        form a group.
+      </h5>
       <Form form={form}>
+        <div
+          className="wrap-input100 validate-input m-t-27"
+          style={{ display: "flex" }}
+        >
+          <input
+            className="input100"
+            onChange={handleInputChange}
+            value={newEmail}
+            placeholder="Write the e-mail to start chat..."
+            style={{ height: "50px" }}
+          />
+          <span className="focus-input100"></span>
+          <button
+            style={{ width: "60px", height: "50px" }}
+            className="login100-form-btn"
+            onClick={handleAddNewContact}
+          >
+            <MdControlPoint size={100} />
+          </button>
+        </div>
         <div className="email-list m-t-16">
+          <h5 className=" m-t-8 m-b-16">Starting a chat with: </h5>
           {emails && (
-            <ul>
+            <ul className="m-b-16">
               {emails.map((email) => {
                 return (
                   <li key={email}>
@@ -61,19 +98,6 @@ const CreateChatModal = ({
               })}
             </ul>
           )}
-        </div>
-
-        <div className="wrap-input100 validate-input m-t-27" style={{ display: "flex" }}>
-          <input
-            className="input100"
-            onChange={handleInputChange}
-            value={newEmail}
-            placeholder="Write the e-mail to start chat..."
-          />
-          <span className="focus-input100"></span>
-          <button style={{ width: "100px" }} className="login100-form-btn" onClick={handleAddNewContact}>
-            Add
-          </button>
         </div>
       </Form>
     </Modal>
