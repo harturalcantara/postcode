@@ -6,7 +6,7 @@ import SidebarChats from "./../SidebarChats/index";
 const Sidebar = ({ setUserChat, userChat }) => {
   return (
     <C.Container>
-      <SidebarHeader setUserChat={setUserChat} />
+      <SidebarHeader setUserChat={setUserChat} userChat={userChat} />
       <SidebarChats setUserChat={setUserChat} userChat={userChat} />
     </C.Container>
   );

@@ -136,12 +136,12 @@ const ChatHeader = ({
               onChange={(e) => setSearchInput(e.target.value)}
               style={{
                 width: "250px",
-                height: "42px",
+                height: "36px",
                 paddingLeft: "35px",
                 backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
                 backgroundPosition: "10px 50%",
                 backgroundRepeat: "no-repeat",
-                backgroundSize: "20px 20px",
+                backgroundSize: "16px 16px",
               }}
               value={searchInput}
               placeholder="Search message..."
@@ -152,7 +152,7 @@ const ChatHeader = ({
         <div style={{ position: "relative" }}>
           <img
             style={{ cursor: "pointer" }}
-            className="m-t-10"
+            className="m-t-8"
             width={"24px"}
             height={"24px"}
             src={iconEllipsis}

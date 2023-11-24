@@ -10,12 +10,13 @@ import * as C from "./styles/app";
 const App = () => {
   const [user, loading] = useAuthState(auth);
   const [userChat, setUserChat] = useState(null);
-
+  
   useEffect(() => {
     if (user) {
       db.collection("users").doc(user.uid).set({
         email: user.email,
         photoURL: user.photoURL,
+        description: "Define a description...",
       });
     }
   }, [user]);
@@ -23,6 +24,8 @@ const App = () => {
   if (loading) return <Loading />;
 
   if (!user) return <Login />;
+
+  console.log('usuario:', user);
 
   return (
     <C.StyledContainer>

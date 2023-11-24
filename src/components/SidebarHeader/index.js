@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as C from "./styles";
 import { MdChat, MdPerson, MdExitToApp } from "react-icons/md";
 import * as EmailValidator from "email-validator";
@@ -8,7 +8,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import CreateChatModal from "../CreateChatModal";
 import { Modal, Button } from "antd";
 
-const SidebarHeader = ({ setUserChat, userId }) => {
+const SidebarHeader = ({ setUserChat, userChat }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -30,6 +30,26 @@ const SidebarHeader = ({ setUserChat, userId }) => {
   const [chatsSnapshot] = useCollection(refChat);
   const [isCreationOpen, setIsCreationOpen] = useState(false);
   const [emails, setEmails] = useState([]);
+
+  const [userData, setUserData] = useState(null); // State para armazenar os dados do usuário
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        try {
+          const userDoc = await db.collection("users").doc(user.uid).get();
+          setUserData(userDoc.data());
+        } catch (error) {
+          console.error("Error fetching user data:", error.message);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  console.log("Description:", userData?.description);
+
 
   const handleCreateChat = () => {
     setIsCreationOpen(true);
@@ -93,9 +113,7 @@ const SidebarHeader = ({ setUserChat, userId }) => {
       console.log('Apenas os chats', userChatsQuery.docs);
 
       /* Passo 2 */
-      // Array para armazenar os resultados
-      //const userChats = [];
-      
+
       userChatsQuery.forEach(async (chatDoc) => {
         const chatId = chatDoc.id;
         // Consulta para obter os documentos da subcoleção "messages" para o chat atual
@@ -146,9 +164,18 @@ const SidebarHeader = ({ setUserChat, userId }) => {
           <MdPerson onClick={showModal} />
           <Modal
             title="Perfil"
-            open={isModalOpen}
-            onOk={handleOk}
+            visible={isModalOpen}
             onCancel={handleCancel}
+            footer={[
+              <div key="buttons" style={{ textAlign: "center" }}>
+                <Button key="cancel" onClick={handleCancel}>
+                  Cancel
+                </Button>
+                <Button key="ok" type="primary" onClick={handleOk}>
+                  Ok
+                </Button>
+              </div>,
+            ]}
           >
             <div style={{ textAlign: "center" }}>
               <C.AvatarPerfil src={user?.photoURL} />
@@ -156,24 +183,24 @@ const SidebarHeader = ({ setUserChat, userId }) => {
                 <b>{user?.displayName}</b>
               </h4>
               <hr></hr>
+            </div>
+            <div style={{ marginLeft: "110px" }}>
               <p>
                 {" "}
-                <b>Email:</b> {user?.email}{" "}
+                <b>E-mail:</b> {user?.email}{" "}
               </p>
               <p>
                 {" "}
                 <b>UID:</b> {user.uid}{" "}
               </p>
-              <p>
-                {" "} <b>Descrição:</b> ... {" "}
-              </p>
+              <p> <b> Description: </b> {userData?.description} </p>
             </div>
-            <div style={{ textAlign: "center" }}>
-              <Button type="primary" info onClick={updateProfile}>
-                Atualizar Perfil
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <Button type="primary" style={{ marginRight: "10px", backgroundColor: "#2e8b57" }} onClick={updateProfile}>
+                Update account
               </Button>
-              <Button type="primary" danger onClick={deleteUserData}>
-                Deletar conta
+              <Button type="primary" style={{ backgroundColor: "#9c1111" }} onClick={deleteUserData}>
+                Delete account
               </Button>
             </div>
           </Modal>

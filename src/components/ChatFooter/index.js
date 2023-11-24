@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as C from "./styles";
-import { MdSend } from "react-icons/md";
+import { MdSend, MdAttachFile, MdInsertEmoticon, MdKeyboardVoice, MdPhoto, MdLink } from "react-icons/md";
 import { auth, db } from "../../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/compat/app";
@@ -33,6 +33,10 @@ const ChatFooter = ({ editMessage, messageEdit, setMessageEdit, setEditMode, edi
   return (
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
+        <MdLink/>
+        <MdPhoto/>
+        <MdAttachFile/>
+        <MdInsertEmoticon/>
         <C.Input
           placeholder="Type a message..."
           onChange={(e) => {
@@ -45,7 +49,11 @@ const ChatFooter = ({ editMessage, messageEdit, setMessageEdit, setEditMode, edi
           }}
           value={editMode ? messageEdit.message :  message }
         />
-        <MdSend onClick={handleSendMessage} />
+        {message ? (
+          <MdSend onClick={handleSendMessage} />
+        ) : (
+          <MdKeyboardVoice onClick={() => console.log("Start voice recording")} />
+        )}
       </C.Form>
     </C.Container>
   );
