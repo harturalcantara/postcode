@@ -16,6 +16,23 @@ const SidebarChats = ({ setUserChat, userChat }) => {
 
   return (
     <C.Container>
+      <div className="wrap-input200 validate-input" style={{borderRadius: "0px", border: "1px solid #ccc"}}>
+        <input
+          className="input100"
+          style={{
+            width: "250px",
+            height: "36px",
+            paddingLeft: "35px",
+            backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
+            backgroundPosition: "10px 50%",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "16px 16px",
+            fontSize: "16px",
+          }}
+          placeholder="Search user..."
+        />
+        <span className="focus-input200"></span>
+      </div>
       {chatsSnapshot?.docs.map((item, index) => (
         <C.Content key={index}>
           <SidebarChatsItem

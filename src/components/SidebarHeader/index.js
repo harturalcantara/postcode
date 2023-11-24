@@ -50,7 +50,6 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
 
   console.log("Description:", userData?.description);
 
-
   const handleCreateChat = () => {
     setIsCreationOpen(true);
   };
@@ -81,8 +80,34 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
     );
   };
 
-  const updateUserProfile  = async () => {
-    
+  const [updateName, setUpdateName] = useState(userData?.name || "");
+  const [updatePhotoURL, setUpdatePhotoURL] = useState(
+    userData?.photoURL || ""
+  );
+  const [updatedDescription, setUpdatedDescription] = useState(
+    userData?.description || ""
+  );
+
+  const updateUserProfile = async () => {
+    try {
+      console.log(
+        "Estou indo atualizar os dados do usuario!",
+        updatedDescription,
+        " --- ",
+        user.uid
+      );
+
+      await db.collection("users").doc(user.uid).update({
+        name: updateName,
+        photoURL: updatePhotoURL,
+        description: updatedDescription,
+      });
+
+      console.log("Dados do usuário atualizados com sucesso!");
+      setIsModalOpen(false); // Feche o modal após a atualização
+    } catch (error) {
+      console.error("Erro ao atualizar os dados do usuário:", error.message);
+    }
   };
 
   const [userLoggedIn] = useAuthState(auth);
@@ -95,11 +120,11 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
       /*passo 3 - Deletar o usuario */
 
       const userChatsQuery = await db
-      .collection("chats")
-      .where("users", "array-contains", user.email)
-      .get();
+        .collection("chats")
+        .where("users", "array-contains", user.email)
+        .get();
 
-      console.log('Apenas os chats', userChatsQuery.docs);
+      console.log("Apenas os chats", userChatsQuery.docs);
 
       /* Passo 2 */
 
@@ -111,7 +136,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
           .doc(chatId)
           .collection("messages")
           .get();
-      
+
         // Delete all "messages"
         messagesQuery.forEach(async (messageDoc) => {
           await messageDoc.ref.delete();
@@ -122,10 +147,12 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
         await chat.ref.delete();
       });
 
-      console.log("Ms from system: Coleção 'chats' e 'messages' excluídos com sucesso!");
+      console.log(
+        "Ms from system: Coleção 'chats' e 'messages' excluídos com sucesso!"
+      );
       await db.collection("users").doc(userLoggedIn.uid).delete();
-      auth.signOut()
-      setUserChat(null)
+      auth.signOut();
+      setUserChat(null);
     } catch (error) {
       alert("Error deleting user:", error.message);
     }
@@ -175,17 +202,107 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                 {" "}
                 <b>E-mail:</b> {user?.email}{" "}
               </p>
-              <p>
+              {/* <p>
                 {" "}
                 <b>UID:</b> {user.uid}{" "}
+              </p> */}
+              <p>
+                {" "}
+                <b> Description: </b> {updatedDescription}{" "}
               </p>
-              <p> <b> Description: </b> {userData?.description} </p>
+              
+              Name description:
+              <div
+                className="wrap-input100 validate-input"
+                style={{
+                  width: "250px",
+                }}
+              >
+                <input
+                  type="text"
+                  style={{
+                    width: "250px",
+                    height: "36px",
+                    //paddingLeft: "35px",
+                    //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
+                    backgroundPosition: "10px 50%",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "16px 16px",
+                    fontSize: "16px",
+                  }}
+                  className="input100"
+                  value={updateName}
+                  onChange={(e) => setUpdateName(e.target.value)}
+                  placeholder="Update description..."
+                />
+              </div>
+
+              photoURL description:
+              <div
+                className="wrap-input100 validate-input"
+                style={{
+                  width: "250px",
+                }}
+              >
+                <input
+                  type="text"
+                  style={{
+                    width: "250px",
+                    height: "36px",
+                    //paddingLeft: "35px",
+                    //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
+                    backgroundPosition: "10px 50%",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "16px 16px",
+                    fontSize: "16px",
+                  }}
+                  className="input100"
+                  value={updatePhotoURL}
+                  onChange={(e) => setUpdatePhotoURL(e.target.value)}
+                  placeholder="Update description..."
+                />
+              </div>
+
+              Update description:
+              <div
+                className="wrap-input100 validate-input"
+                style={{
+                  width: "250px",
+                }}
+              >
+                <input
+                  type="text"
+                  style={{
+                    width: "250px",
+                    height: "36px",
+                    //paddingLeft: "35px",
+                    //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
+                    backgroundPosition: "10px 50%",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "16px 16px",
+                    fontSize: "16px",
+                  }}
+                  className="input100"
+                  value={updatedDescription}
+                  onChange={(e) => setUpdatedDescription(e.target.value)}
+                  placeholder="Update description..."
+                />
+              </div>
+              
             </div>
             <div style={{ textAlign: "center", marginTop: "20px" }}>
-              <Button type="primary" style={{ marginRight: "10px", backgroundColor: "#2e8b57" }} onClick={updateUserProfile}>
+              <Button
+                type="primary"
+                style={{ marginRight: "10px", backgroundColor: "#2e8b57" }}
+                onClick={updateUserProfile}
+              >
                 Update account
               </Button>
-              <Button type="primary" style={{ backgroundColor: "#9c1111" }} onClick={deleteUserData}>
+              <Button
+                type="primary"
+                style={{ backgroundColor: "#9c1111" }}
+                onClick={deleteUserData}
+              >
                 Delete account
               </Button>
             </div>

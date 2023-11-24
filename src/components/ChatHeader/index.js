@@ -142,6 +142,7 @@ const ChatHeader = ({
                 backgroundPosition: "10px 50%",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "16px 16px",
+                fontSize: "16px",
               }}
               value={searchInput}
               placeholder="Search message..."
