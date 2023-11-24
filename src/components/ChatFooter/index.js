@@ -1,20 +1,45 @@
 import React, { useState } from "react";
+import EmojiPicker from "emoji-picker-react";
 import * as C from "./styles";
-import { MdSend, MdAttachFile, MdInsertEmoticon, MdKeyboardVoice, MdPhoto, MdLink } from "react-icons/md";
+import {
+  MdSend,
+  MdAttachFile,
+  MdInsertEmoticon,
+  MdKeyboardVoice,
+  MdLink,
+  MdPhoto,
+} from "react-icons/md";
 import { auth, db } from "../../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/compat/app";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-const ChatFooter = ({ editMessage, messageEdit, setMessageEdit, setEditMode, editMode, chatId }) => {
+const ChatFooter = ({
+  editMessage,
+  messageEdit,
+  setMessageEdit,
+  setEditMode,
+  editMode,
+  chatId,
+}) => {
   const [user] = useAuthState(auth);
   const [message, setMessage] = useState("");
+  const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
+
+  const toggleEmojiPicker = () => {
+    setEmojiPickerVisible(!emojiPickerVisible);
+  };
+
+  const handleEmojiSelect = (emoji) => {
+    setMessage((prevMessage) => prevMessage + emoji);
+    setEmojiPickerVisible(false);
+  };
 
   const handleSendMessage = (e) => {
-    if(editMode) {
-      editMessage(messageEdit)
-      setEditMode(false)
-      return
+    if (editMode) {
+      editMessage(messageEdit);
+      setEditMode(false);
+      return;
     }
 
     e.preventDefault();
@@ -33,26 +58,41 @@ const ChatFooter = ({ editMessage, messageEdit, setMessageEdit, setEditMode, edi
   return (
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
-        <MdLink/>
-        <MdPhoto/>
-        <MdAttachFile/>
-        <MdInsertEmoticon/>
+        <MdLink />
+        <MdPhoto />
+        <MdAttachFile />
+        <MdInsertEmoticon style={{cursor:'pointer'}} onClick={toggleEmojiPicker} />
+        {emojiPickerVisible && (
+          <div style={{ position: 'absolute', bottom: 100 }}>
+          <EmojiPicker
+            width={400}
+            height={400}
+            skinTonesDisabled
+            previewConfig={{
+              showPreview: false,
+            }}
+            onEmojiClick={(e) => handleEmojiSelect(e.emoji)}
+          />
+          </div>
+        )}
         <C.Input
           placeholder="Type a message..."
           onChange={(e) => {
-            if(editMode) {
-              setMessageEdit({...messageEdit, message: e.target.value})
-            }
-            else {
-              setMessage(e.target.value)
+            if (editMode) {
+              setMessageEdit({ ...messageEdit, message: e.target.value });
+            } else {
+              setMessage(e.target.value);
             }
           }}
-          value={editMode ? messageEdit.message :  message }
+          value={editMode ? messageEdit.message : message}
         />
+
         {message ? (
           <MdSend onClick={handleSendMessage} />
         ) : (
-          <MdKeyboardVoice onClick={() => console.log("Start voice recording")} />
+          <MdKeyboardVoice
+            onClick={() => console.log("Start voice recording")}
+          />
         )}
       </C.Form>
     </C.Container>
