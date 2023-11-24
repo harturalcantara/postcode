@@ -33,23 +33,10 @@ const SidebarHeader = ({ setUserChat, userId }) => {
 
   const handleCreateChat = () => {
     setIsCreationOpen(true);
-    // if (!EmailValidator.validate(emailInput)) {
-    //   return alert("E-mail inválido!");
-    // } else if (emailInput === user.email) {
-    //   return alert("Insira um e-mail diferente do seu!");
-    // } else if (chatExists(emailInput)) {
-    //   return alert("Chat já existe!");
-    // }
-
-    // db.collection("chats").add({
-    //   users: [user.email, emailInput],
-    // });
   };
 
   const createContactSubmit = (newChatEmails) => {
     if (!newChatEmails) return;
-
-    //console.log("pepepe");
 
     newChatEmails.forEach((emailInput) => {
       if (!EmailValidator.validate(emailInput)) {
@@ -60,8 +47,6 @@ const SidebarHeader = ({ setUserChat, userId }) => {
         return alert("Chat já existe!");
       }
     });
-
-    console.log("pewpew", [...newChatEmails, user.email]);
 
     db.collection("chats").add({
       users: [...emails, user.email],
@@ -91,31 +76,52 @@ const SidebarHeader = ({ setUserChat, userId }) => {
     }
   };
 
-  // const handleDeleteUser = async () => {
-  //   try {
-  //     const user = db.auth().currentUser;
-
-  //     if (user) {
-  //       await user.delete();
-  //       console.log("User deleted successfully.");
-  //     } else {
-  //       console.log("No user is currently signed in.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error deleting user:", error.message);
-  //   }
-  // };
+  const [userLoggedIn] = useAuthState(auth);
 
   const deleteUserData = async () => {
+    console.log("Id do usuario a ser deletado:", userLoggedIn.uid);
     try {
-      // Reference to the user document
-      const userRef = db.collection("chats").doc(userId);
-      // Delete the user document
-      await userRef.delete();
+      /*passo 1 - Pegar todos os chats do qual é o usuario */
+      /*passo 2 - Deletar todas as 'Mensagens' contidas em cada 'Chat' do usuario */
+      /*passo 3 - Deletar o usuario */
 
-      alert(`User with ID ${userId} deleted successfully!`);
-      userId = null;
-      window.location.reload(true);
+      const userChatsQuery = await db
+      .collection("chats")
+      .where("users", "array-contains", user.email)
+      .get();
+
+      console.log('Apenas os chats', userChatsQuery.docs);
+
+      /* Passo 2 */
+      // Array para armazenar os resultados
+      //const userChats = [];
+      
+      userChatsQuery.forEach(async (chatDoc) => {
+        const chatId = chatDoc.id;
+        // Consulta para obter os documentos da subcoleção "messages" para o chat atual
+        const messagesQuery = await db
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .get();
+      
+        // Exclui cada documento da subcoleção "messages"
+        messagesQuery.forEach(async (messageDoc) => {
+          await messageDoc.ref.delete();
+        });
+      });
+
+      userChatsQuery.forEach(async (chat) => {
+        //console.log('chat to delete:', chat)
+        await chat.ref.delete();
+      });
+
+      console.log("Ms from system: Coleção 'chats' e 'messages' excluídos com sucesso!");
+      
+      
+      await db.collection("users").doc(userLoggedIn.uid).delete();
+      auth.signOut()
+      setUserChat(null)
     } catch (error) {
       alert("Error deleting user:", error.message);
     }
@@ -146,11 +152,21 @@ const SidebarHeader = ({ setUserChat, userId }) => {
           >
             <div style={{ textAlign: "center" }}>
               <C.AvatarPerfil src={user?.photoURL} />
-              <h4><b>{user?.displayName}</b></h4>
+              <h4>
+                <b>{user?.displayName}</b>
+              </h4>
               <hr></hr>
-              <p> <b>Email:</b> {user?.email} </p>
-              <p> <b>UID:</b> {user.uid} </p>
-              <p> <b>Descrição:</b> ... </p>
+              <p>
+                {" "}
+                <b>Email:</b> {user?.email}{" "}
+              </p>
+              <p>
+                {" "}
+                <b>UID:</b> {user.uid}{" "}
+              </p>
+              <p>
+                {" "} <b>Descrição:</b> ... {" "}
+              </p>
             </div>
             <div style={{ textAlign: "center" }}>
               <Button type="primary" info onClick={updateProfile}>

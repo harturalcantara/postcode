@@ -4,7 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../services/firebase";
 import { db } from "../../services/firebase";
 import { MdExpandMore } from "react-icons/md";
-//import { Icon } from 'antd'
 import { CheckOutlined } from "@ant-design/icons";
 
 const Message = ({
@@ -17,10 +16,10 @@ const Message = ({
   setEditionMode,
   setMessageEdition,
 }) => {
+
   const [userLoggedIn] = useAuthState(auth);
 
   const deleteMessage = async () => {
-    console.log("wew");
     // Query to find documents based on the specified field value
     const querySnapshot = await db
       .collection("chats")
@@ -71,6 +70,8 @@ const Message = ({
         }
       }
     }, [isOpen, position]);
+
+
 
     return (
       <C.MessageActions

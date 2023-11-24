@@ -5,8 +5,14 @@ import iconEllipsis from "../../images/icon_ellipsis_vertical.png";
 import { db } from "../../services/firebase";
 import { Modal } from "antd";
 
-const ChatHeader = ({ photoURL, name, email, uid, setSomeState, chatIdToDelete }) => {
-  console.log('chat', name, email, uid)
+const ChatHeader = ({
+  photoURL,
+  name,
+  email,
+  uid,
+  setSomeState,
+  chatIdToDelete,
+}) => {
   const [searchInput, setSearchInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,18 +28,28 @@ const ChatHeader = ({ photoURL, name, email, uid, setSomeState, chatIdToDelete }
     setIsModalOpen(false);
   };
 
-  console.log(chatIdToDelete);
-
-  const deleteUserData = async () => {
+  const deleteUserChat = async () => {
     try {
-      // Reference to the user document
-      const userRef = db.collection("chats").doc(chatIdToDelete);
-      // Delete the user document
-      await userRef.delete();
+      const userRef = await db
+        .collection("chats")
+        .doc(chatIdToDelete)
+        .collection("messages")
+        .get();
 
-      alert(`User with ID ${chatIdToDelete} deleted successfully!`);
-      chatIdToDelete = null;
+      const deletePromises = userRef.docs.map(async (doc) => {
+        await db
+          .collection("chats")
+          .doc(chatIdToDelete)
+          .collection("messages")
+          .doc(doc.id)
+          .delete();
+        console.log(`Document with ID ${doc.id} deleted successfully.`);
+      });
+
+      await Promise.all(deletePromises);
+      await db.collection("chats").doc(chatIdToDelete).delete();
       window.location.reload(true);
+      alert("Chat deleted!");
     } catch (error) {
       alert("Error deleting user:", error.message);
     }
@@ -61,7 +77,7 @@ const ChatHeader = ({ photoURL, name, email, uid, setSomeState, chatIdToDelete }
           zIndex: 1,
         }}
       >
-        <p onClick={deleteUserData}> Delete chat</p>
+        <p onClick={deleteUserChat}> Delete chat</p>
         <hr></hr>
         <p>Sair</p>
       </C.MessageActions>
@@ -77,7 +93,11 @@ const ChatHeader = ({ photoURL, name, email, uid, setSomeState, chatIdToDelete }
   return (
     <C.Container>
       <C.UserInfo>
-        {photoURL ? <C.Avatar src={photoURL} alt="Avatar" onClick={showModal} /> : <MdPerson />}
+        {photoURL ? (
+          <C.Avatar src={photoURL} alt="Avatar" onClick={showModal} />
+        ) : (
+          <MdPerson />
+        )}
         <Modal
           title="Perfil"
           open={isModalOpen}
