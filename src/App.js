@@ -14,6 +14,7 @@ const App = () => {
   useEffect(() => {
     if (user) {
       db.collection("users").doc(user.uid).set({
+        name: user.displayName,
         email: user.email,
         photoURL: user.photoURL,
         description: "Define a description...",

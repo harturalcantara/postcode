@@ -7,8 +7,19 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import CreateChatModal from "../CreateChatModal";
 import { Modal, Button } from "antd";
+import "./styles.css";
 
 const SidebarHeader = ({ setUserChat, userChat }) => {
+  const [changeState, setChangeState] = useState(true);
+
+  const handleChangeState = () => {
+    setChangeState(false);
+  };
+
+  const handleChangeStateTrue = () => {
+    setChangeState(true);
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -38,7 +49,9 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
       if (user) {
         try {
           const userDoc = await db.collection("users").doc(user.uid).get();
+          
           setUserData(userDoc.data());
+          //console.log('DATA:', userData);
         } catch (error) {
           console.error("Error fetching user data:", error.message);
         }
@@ -47,8 +60,6 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
 
     fetchUserData();
   }, [user]);
-
-  console.log("Description:", userData?.description);
 
   const handleCreateChat = () => {
     setIsCreationOpen(true);
@@ -81,22 +92,11 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
   };
 
   const [updateName, setUpdateName] = useState(userData?.name || "");
-  const [updatePhotoURL, setUpdatePhotoURL] = useState(
-    userData?.photoURL || ""
-  );
-  const [updatedDescription, setUpdatedDescription] = useState(
-    userData?.description || ""
-  );
+  const [updatePhotoURL, setUpdatePhotoURL] = useState(userData?.photoURL || "");
+  const [updatedDescription, setUpdatedDescription] = useState(userData?.description || "");
 
   const updateUserProfile = async () => {
     try {
-      console.log(
-        "Estou indo atualizar os dados do usuario!",
-        updatedDescription,
-        " --- ",
-        user.uid
-      );
-
       await db.collection("users").doc(user.uid).update({
         name: updateName,
         photoURL: updatePhotoURL,
@@ -104,7 +104,12 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
       });
 
       console.log("Dados do usuário atualizados com sucesso!");
-      setIsModalOpen(false); // Feche o modal após a atualização
+      
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      setUserData(userDoc.data());
+      
+      handleChangeStateTrue();
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Erro ao atualizar os dados do usuário:", error.message);
     }
@@ -171,7 +176,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
       )}
 
       <C.Container>
-        <C.Avatar src={user?.photoURL} onClick={showModal} />
+        <C.Avatar src={userData?.photoURL} onClick={showModal} />
         <C.Options>
           <MdChat onClick={handleCreateChat} />
           <MdPerson onClick={showModal} />
@@ -191,110 +196,111 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
             ]}
           >
             <div style={{ textAlign: "center" }}>
-              <C.AvatarPerfil src={user?.photoURL} />
+              <C.AvatarPerfil src={userData?.photoURL} />
               <h4>
-                <b>{user?.displayName}</b>
+                <b>{userData?.name}</b>
               </h4>
               <hr></hr>
             </div>
             <div style={{ marginLeft: "110px" }}>
-              <p>
-                {" "}
-                <b>E-mail:</b> {user?.email}{" "}
-              </p>
-              {/* <p>
-                {" "}
-                <b>UID:</b> {user.uid}{" "}
-              </p> */}
-              <p>
-                {" "}
-                <b> Description: </b> {updatedDescription}{" "}
-              </p>
-              
-              Name description:
-              <div
-                className="wrap-input100 validate-input"
-                style={{
-                  width: "250px",
-                }}
-              >
-                <input
-                  type="text"
-                  style={{
-                    width: "250px",
-                    height: "36px",
-                    //paddingLeft: "35px",
-                    //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
-                    backgroundPosition: "10px 50%",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "16px 16px",
-                    fontSize: "16px",
-                  }}
-                  className="input100"
-                  value={updateName}
-                  onChange={(e) => setUpdateName(e.target.value)}
-                  placeholder="Update description..."
-                />
-              </div>
-
-              photoURL description:
-              <div
-                className="wrap-input100 validate-input"
-                style={{
-                  width: "250px",
-                }}
-              >
-                <input
-                  type="text"
-                  style={{
-                    width: "250px",
-                    height: "36px",
-                    //paddingLeft: "35px",
-                    //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
-                    backgroundPosition: "10px 50%",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "16px 16px",
-                    fontSize: "16px",
-                  }}
-                  className="input100"
-                  value={updatePhotoURL}
-                  onChange={(e) => setUpdatePhotoURL(e.target.value)}
-                  placeholder="Update description..."
-                />
-              </div>
-
-              Update description:
-              <div
-                className="wrap-input100 validate-input"
-                style={{
-                  width: "250px",
-                }}
-              >
-                <input
-                  type="text"
-                  style={{
-                    width: "250px",
-                    height: "36px",
-                    //paddingLeft: "35px",
-                    //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
-                    backgroundPosition: "10px 50%",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "16px 16px",
-                    fontSize: "16px",
-                  }}
-                  className="input100"
-                  value={updatedDescription}
-                  onChange={(e) => setUpdatedDescription(e.target.value)}
-                  placeholder="Update description..."
-                />
-              </div>
-              
+              {changeState ? (
+                <div>
+                  <p>
+                    <b>E-mail:</b> {user?.email}{" "}
+                  </p>
+                  <p>
+                    {" "}
+                    <b> Description: </b> {userData?.description}
+                  </p>
+                </div>
+              ) : (
+                // Se userState for falso
+                <div>
+                  Name description:
+                  <div
+                    className="wrap-input100 validate-input"
+                    style={{ width: "250px" }}
+                  >
+                    <input
+                      type="text"
+                      style={{
+                        width: "250px",
+                        height: "36px",
+                        backgroundPosition: "10px 50%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "16px 16px",
+                        fontSize: "16px",
+                      }}
+                      className="input100"
+                      value={updateName}
+                      onChange={(e) => setUpdateName(e.target.value)}
+                      placeholder="Update name..."
+                    />
+                  </div>
+                  Update PhotoURL:
+                  <div
+                    className="wrap-input100 validate-input"
+                    style={{
+                      width: "250px",
+                    }}
+                  >
+                    <input
+                      type="text"
+                      style={{
+                        width: "250px",
+                        height: "36px",
+                        backgroundPosition: "10px 50%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "16px 16px",
+                        fontSize: "16px",
+                      }}
+                      className="input100"
+                      value={updatePhotoURL}
+                      onChange={(e) => setUpdatePhotoURL(e.target.value)}
+                      placeholder="Update photoURL..."
+                    />
+                  </div>
+                  Update description:
+                  <div
+                    className="wrap-input100 validate-input"
+                    style={{
+                      width: "250px",
+                    }}
+                  >
+                    <input
+                      type="text"
+                      style={{
+                        width: "250px",
+                        height: "36px",
+                        //paddingLeft: "35px",
+                        //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
+                        backgroundPosition: "10px 50%",
+                        backgroundRepeat: "no-repeat",
+                        backgroundSize: "16px 16px",
+                        fontSize: "16px",
+                      }}
+                      className="input100"
+                      value={updatedDescription}
+                      onChange={(e) => setUpdatedDescription(e.target.value)}
+                      placeholder="Update description..."
+                    />
+                  </div>
+                  <Button
+                    type="primary"
+                    style={{ marginRight: "10px", backgroundColor: "#2e8b57" }}
+                    onClick={updateUserProfile}
+                  >
+                    {" "}
+                    Update{" "}
+                  </Button>
+                </div>
+              )}
             </div>
             <div style={{ textAlign: "center", marginTop: "20px" }}>
               <Button
                 type="primary"
                 style={{ marginRight: "10px", backgroundColor: "#2e8b57" }}
-                onClick={updateUserProfile}
+                onClick={handleChangeState}
               >
                 Update account
               </Button>
