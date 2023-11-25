@@ -13,13 +13,21 @@ const SidebarChatsItem = ({ id, users, user, setUserChat, active }) => {
   );
 
   const Avatar = getUserItem?.docs?.[0]?.data();
-  const item = getUser(users, user);
+  // const item = getUser(users, user);
 
-  const getName = () => {
+  // const getName = () => {
+  //   if(users.length > 2) {
+  //     return "Group chat"
+  //   } else {
+  //     return item.split("@")[0]
+  //   }
+  // }
+
+  const getRealName = () => {
     if(users.length > 2) {
       return "Group chat"
     } else {
-      return item.split("@")[0]
+      return Avatar?.name
     }
   }
   
@@ -35,7 +43,7 @@ const SidebarChatsItem = ({ id, users, user, setUserChat, active }) => {
   const handleNewChat = () => {
     const userChat = {
       chatId: id,
-      name: getName(),
+      name: getRealName(),
       photoURL: getAvatar(),
     };
 
@@ -45,7 +53,7 @@ const SidebarChatsItem = ({ id, users, user, setUserChat, active }) => {
   return (
     <C.Container onClick={handleNewChat} className={active}>
       {Avatar ? <C.Avatar src={getAvatar()} /> : <MdPerson />}
-      <C.Name>{getName()}</C.Name>
+      <C.Name>{getRealName()}</C.Name>
     </C.Container>
   );
 };

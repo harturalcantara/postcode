@@ -68,8 +68,8 @@ const Login = () => {
                 href="https://www.example.com"
                 className="btn-google m-b-8"
                 onClick={(e) => {
-                  e.preventDefault(); // Evita a ação padrão de seguir o link
-                  handleSignin(); // Chama a função handleSignin
+                  e.preventDefault();
+                  handleSignin();
                 }}
               >
                 <i className="fa fa-google"></i>

@@ -24,6 +24,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
 
   const showModal = () => {
     setIsModalOpen(true);
+    setChangeState(true);
   };
 
   const handleOk = () => {
@@ -32,6 +33,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setChangeState(true);
   };
 
   const [user] = useAuthState(auth);
@@ -182,7 +184,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
           <MdPerson onClick={showModal} />
           <Modal
             title="Perfil"
-            visible={isModalOpen}
+            open={isModalOpen}
             onCancel={handleCancel}
             footer={[
               <div key="buttons" style={{ textAlign: "center" }}>
@@ -195,6 +197,10 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
               </div>,
             ]}
           >
+            <div style={{ textAlign:"center"}}>
+            
+              {changeState ? (
+                <div>
             <div style={{ textAlign: "center" }}>
               <C.AvatarPerfil src={userData?.photoURL} />
               <h4>
@@ -202,9 +208,6 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
               </h4>
               <hr></hr>
             </div>
-            <div style={{ marginLeft: "110px" }}>
-              {changeState ? (
-                <div>
                   <p>
                     <b>E-mail:</b> {user?.email}{" "}
                   </p>
@@ -214,17 +217,17 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                   </p>
                 </div>
               ) : (
-                // Se userState for falso
                 <div>
+                  <h5 style={{textAlign: "center"}}>Enter all new information!</h5>
                   Name description:
                   <div
                     className="wrap-input100 validate-input"
-                    style={{ width: "250px" }}
+                    style={{ width: "400px", textAlign: "center",  margin: "auto", }}
                   >
                     <input
                       type="text"
                       style={{
-                        width: "250px",
+                        width: "400px",
                         height: "36px",
                         backgroundPosition: "10px 50%",
                         backgroundRepeat: "no-repeat",
@@ -234,20 +237,18 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                       className="input100"
                       value={updateName}
                       onChange={(e) => setUpdateName(e.target.value)}
-                      placeholder="Update name..."
+                      placeholder="New name..."
                     />
                   </div>
                   Update PhotoURL:
                   <div
                     className="wrap-input100 validate-input"
-                    style={{
-                      width: "250px",
-                    }}
+                    style={{ width: "400px", textAlign: "center",  margin: "auto", }}
                   >
                     <input
                       type="text"
                       style={{
-                        width: "250px",
+                        width: "400px",
                         height: "36px",
                         backgroundPosition: "10px 50%",
                         backgroundRepeat: "no-repeat",
@@ -257,23 +258,19 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                       className="input100"
                       value={updatePhotoURL}
                       onChange={(e) => setUpdatePhotoURL(e.target.value)}
-                      placeholder="Update photoURL..."
+                      placeholder="New photo (type only URL)..."
                     />
                   </div>
                   Update description:
                   <div
                     className="wrap-input100 validate-input"
-                    style={{
-                      width: "250px",
-                    }}
+                    style={{ width: "400px", textAlign: "center",  margin: "auto", }}
                   >
                     <input
                       type="text"
                       style={{
-                        width: "250px",
+                        width: "400px",
                         height: "36px",
-                        //paddingLeft: "35px",
-                        //backgroundImage: 'url("https://i.imgur.com/1uLaGFd.png")',
                         backgroundPosition: "10px 50%",
                         backgroundRepeat: "no-repeat",
                         backgroundSize: "16px 16px",
@@ -287,7 +284,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                   </div>
                   <Button
                     type="primary"
-                    style={{ marginRight: "10px", backgroundColor: "#2e8b57" }}
+                    style={{ marginRight: "10px", backgroundColor: "#2e8b57", marginTop:"10px" }}
                     onClick={updateUserProfile}
                   >
                     {" "}
@@ -296,6 +293,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                 </div>
               )}
             </div>
+              {changeState ? (
             <div style={{ textAlign: "center", marginTop: "20px" }}>
               <Button
                 type="primary"
@@ -312,6 +310,8 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
                 Delete account
               </Button>
             </div>
+             ): (<></>)}
+
           </Modal>
           <MdExitToApp onClick={() => [auth.signOut(), setUserChat(null)]} />
         </C.Options>
