@@ -101,8 +101,8 @@ const Message = ({
               className="m-r-8"
               style={{ fontSize: "12px", marginBottom: "8" }}
             >
-              {" "}
-              @{user.split("@")[0]}{" "}
+              {/* @{user.split("@")[0]} */}
+              @{user}
             </b>
             {userLoggedIn?.email === user && (
               <MdExpandMore
