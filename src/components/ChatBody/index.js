@@ -56,7 +56,7 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
     );
   };
 
-  // Função para atualizar o campo `statusMessage` para `true`
+
   const updateStatusMessage = async (messageId) => {
     const messageDocRef = db.collection("chats").doc(chatId).collection("messages").doc(messageId);
   
@@ -66,13 +66,9 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
       const messageData = messageDocSnapshot.data();
       //console.log('comparando:', messageData.user, user.email );
       if (messageData.user !== user.email) {
-        //console.log("Dados da mensagem:", messageData);
-  
-        // Continue com a lógica de atualização aqui
         await messageDocRef.update({
           statusMessage: true,
         });
-  
         console.log("Status da mensagem atualizado com sucesso!");
       } else {
         console.log("System: e-mail é igual, irei atualizar o status da prox msg!");

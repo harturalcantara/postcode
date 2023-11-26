@@ -17,6 +17,10 @@ In the project directory, you can run:
 
 Runs the app in development mode. Open http://localhost:3000 to view it in your browser.
 
+## Description
+
+Instant messaging is widely utilized by individuals and businesses, enabling a swift exchange of content, including text, images, audio, animations, and videos. As a result, a wide array of communication possibilities is facilitated, catering to both one-on-one interactions and group conversations. Instant messaging software has become an integral part of the daily routine for many individuals and businesses, proving indispensable for the operations of numerous companies and serving as a source of entertainment for many individuals.
+
 ## Product
 
 Instant messaging software. The user will send messages in the format of text, image, animation, video, and audio. A user account is required to use the program. The account will have a name, email, avatar, and a description.

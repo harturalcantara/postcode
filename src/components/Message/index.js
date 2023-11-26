@@ -4,7 +4,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../services/firebase";
 import { db } from "../../services/firebase";
 import { MdExpandMore, MdDone, MdDoneAll } from "react-icons/md";
-//import { CheckOutlined } from "@ant-design/icons";
 
 const Message = ({
   editMessage,
