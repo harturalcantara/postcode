@@ -10,7 +10,7 @@ const Chat = ({ userChat }) => {
   const [someState, setSomeState] = useState("");
   const [editMode, setEditMode] = useState();
   const [messageEdit, setMessageEdit] = useState();
- 
+
   if (!userChat) return <Default />;
 
   const editMessage = async (messageObj) => {
@@ -25,7 +25,8 @@ const Chat = ({ userChat }) => {
 
     await Promise.all(editPromises);
   }
-  console.log('ENVIANDO ISSO DAQUI O', userChat?.name)
+  
+  
   return (
     <C.Container>
       <ChatHeader photoURL={userChat?.photoURL} name={userChat?.name} email={userChat?.email} uid={userChat?.uid} setSomeState={setSomeState} chatIdToDelete={userChat?.chatId} />

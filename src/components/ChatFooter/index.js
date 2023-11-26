@@ -21,7 +21,9 @@ const ChatFooter = ({
   setEditMode,
   editMode,
   chatId,
+  //statusMessage,
 }) => {
+
   const [user] = useAuthState(auth);
   const [message, setMessage] = useState("");
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
@@ -50,17 +52,44 @@ const ChatFooter = ({
       user: user.email,
       photoURL: user.photoURL,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      statusMessage: false,
     });
 
     setMessage("");
   };
 
+  /** AttachFile  */
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const handleAttachFileClick = () => {
+    toggleDropdown();
+    // Adicione aqui qualquer outra lógica que você queira executar quando MdAttachFile for clicado
+  };
+
+  const handleLinkClick = () => {
+    // Adicione aqui a lógica para quando MdLink for clicado
+  };
+
+  const handlePhotoClick = () => {
+    // Adicione aqui a lógica para quando MdPhoto for clicado
+  };
+
   return (
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
-        <MdLink />
-        <MdPhoto />
-        <MdAttachFile />
+        <div style={{ position: 'relative' }}>
+          <MdAttachFile onClick={handleAttachFileClick} />
+          {dropdownOpen && (
+            <div style={{ position: 'absolute', top: -80, left: 0, background:'#ffffff', borderRadius:'5px' }}>
+              <MdLink onClick={handleLinkClick} />
+              <MdPhoto onClick={handlePhotoClick} />
+            </div>
+          )}
+        </div>
         <MdInsertEmoticon style={{cursor:'pointer'}} onClick={toggleEmojiPicker} />
         {emojiPickerVisible && (
           <div style={{ position: 'absolute', bottom: 100 }}>

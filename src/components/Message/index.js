@@ -3,8 +3,8 @@ import * as C from "./styles";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../services/firebase";
 import { db } from "../../services/firebase";
-import { MdExpandMore } from "react-icons/md";
-import { CheckOutlined } from "@ant-design/icons";
+import { MdExpandMore, MdDone, MdDoneAll } from "react-icons/md";
+//import { CheckOutlined } from "@ant-design/icons";
 
 const Message = ({
   editMessage,
@@ -119,13 +119,19 @@ const Message = ({
           </C.MessageDate>
 
           <C.Message>{message.message} </C.Message>
-
+          {/* ideia,
+          passo 1 - uma funcao que ira atualizar o estado da mensagem, se o usuario for para esquerda. Ou seja,
+          se não for usuario logado, então ira atualizar o estado da mensagem.
+          passo 2 - preciso chamar a funcao quando for a mensagem do outra pessoa, a funcao deve pegar o id dessa mensagem
+          e atualizar somente aquela mensagem do statusMessage para 'true'.
+          */}
           <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
                 at {new Date(message?.timestamp).toLocaleString()}
                 {' '}
                 {userLoggedIn?.email === user && (
-              <CheckOutlined type="check" />
-            )}
+                 <> { message?.statusMessage ? (<MdDoneAll style={{ color: 'blue', fontSize:'12px'}}/>): (<MdDone/>) }</>
+              )}
+              
                 
           </C.MessageDate>
         </C.Content>

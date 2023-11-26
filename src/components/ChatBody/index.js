@@ -1,11 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { db } from "../../services/firebase";
+import { db, auth } from "../../services/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Message from "../Message";
+import { useAuthState } from "react-firebase-hooks/auth";
 import * as C from "./styles";
 
 const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState, setSomeState }) => {
+
+  const [user, loading] = useAuthState(auth);
   const [filteredMessages, setFilteredMessages] = useState();
+
+  if (loading) console.log('eita! loading!')
 
   const [messagesRes] = useCollection(
     db
@@ -44,11 +49,53 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
           id: m.data().id ?? "NOT DEFINED",
           message: m.data().message,
           timestamp: m.data().timestamp?.toDate().getTime(),
+          statusMessage: m.data().statusMessage,
         }}
         chatId={chatId}
       />
     );
   };
+
+  // Função para atualizar o campo `statusMessage` para `true`
+  const updateStatusMessage = async (messageId) => {
+    const messageDocRef = db.collection("chats").doc(chatId).collection("messages").doc(messageId);
+  
+    try {
+      const messageDocSnapshot = await messageDocRef.get();
+  
+      const messageData = messageDocSnapshot.data();
+      //console.log('comparando:', messageData.user, user.email );
+      if (messageData.user !== user.email) {
+        //console.log("Dados da mensagem:", messageData);
+  
+        // Continue com a lógica de atualização aqui
+        await messageDocRef.update({
+          statusMessage: true,
+        });
+  
+        console.log("Status da mensagem atualizado com sucesso!");
+      } else {
+        console.log("System: e-mail é igual, irei atualizar o status da prox msg!");
+      }
+    } catch (error) {
+      console.error("Erro ao obter/atualizar o status da mensagem:", error);
+    }
+  };
+
+  // Função para percorrer as mensagens e atualizar o campo `statusMessage` se o e-mail for igual ao do usuário autenticado
+  const updateStatusForAllMessages = () => {
+    if (messagesRes?.docs && user) {
+      messagesRes.docs.forEach((message) => {
+          updateStatusMessage(message.id);
+      });
+    }
+  };
+
+  // Chame a função de atualização de status conforme necessário
+  useEffect(() => {
+    // Chamando a função para atualizar o status de todas as mensagens ao carregar o componente
+    updateStatusForAllMessages();
+  }, [messagesRes]);
 
   return (
     <C.Container ref={refBody}>
