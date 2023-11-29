@@ -10,7 +10,7 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
   const [user, loading] = useAuthState(auth);
   const [filteredMessages, setFilteredMessages] = useState();
 
-  if (loading) console.log('eita! loading!')
+  if (loading) console.log('Loading!')
 
   const [messagesRes] = useCollection(
     db
@@ -84,14 +84,14 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
       messagesRes.docs.forEach((message) => {
           updateStatusMessage(message.id);
       });
-    }
+    } 
   };
 
   // Chame a função de atualização de status conforme necessário
   useEffect(() => {
     // Chamando a função para atualizar o status de todas as mensagens ao carregar o componente
     updateStatusForAllMessages();
-  }, [messagesRes]);
+  }, [messagesRes, user]);
 
   return (
     <C.Container ref={refBody}>

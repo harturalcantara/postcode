@@ -15,7 +15,6 @@ const Message = ({
   setEditionMode,
   setMessageEdition,
 }) => {
-
   const [userLoggedIn] = useAuthState(auth);
 
   const deleteMessage = async () => {
@@ -70,8 +69,6 @@ const Message = ({
       }
     }, [isOpen, position]);
 
-
-
     return (
       <C.MessageActions
         ref={dropdownRef}
@@ -96,12 +93,8 @@ const Message = ({
       <C.Line className={userLoggedIn?.email === user ? "me" : ""}>
         <C.Content className={userLoggedIn?.email === user ? "me" : ""}>
           <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
-            <b
-              className="m-r-8"
-              style={{ fontSize: "12px", marginBottom: "8" }}
-            >
-              {/* @{user.split("@")[0]} */}
-              @{user}
+            <b className="" style={{ fontSize: "11px", marginBottom: "8px" }} >
+              {/* @{user.split("@")[0]} */}@{user}
             </b>
             {userLoggedIn?.email === user && (
               <MdExpandMore
@@ -125,13 +118,17 @@ const Message = ({
           e atualizar somente aquela mensagem do statusMessage para 'true'.
           */}
           <C.MessageDate className={userLoggedIn?.email === user ? "me" : ""}>
-                at {new Date(message?.timestamp).toLocaleString()}
-                {' '}
-                {userLoggedIn?.email === user && (
-                 <> { message?.statusMessage ? (<MdDoneAll style={{ color: 'blue', fontSize:'12px'}}/>): (<MdDone/>) }</>
-              )}
-              
-                
+            at {new Date(message?.timestamp).toLocaleString()}{" "}
+            {userLoggedIn?.email === user && (
+              <>
+                {" "}
+                {message?.statusMessage ? (
+                  <MdDoneAll style={{ color: "blue", fontSize: "12px" }} />
+                ) : (
+                  <MdDone />
+                )}
+              </>
+            )}
           </C.MessageDate>
         </C.Content>
       </C.Line>

@@ -7,7 +7,7 @@ import {
   MdInsertEmoticon,
   MdKeyboardVoice,
   MdLink,
-  MdPhoto,
+  MdPhotoLibrary,
 } from "react-icons/md";
 import { auth, db } from "../../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -78,21 +78,30 @@ const ChatFooter = ({
     // Adicione aqui a lógica para quando MdPhoto for clicado
   };
 
+  const iconeEstilo = {
+    display:'flex' , 
+    alignItems:'center',
+    background: '#ffffff', // Cor de fundo cinza
+    //padding: '5px', // Adicione padding para espaço ao redor do ícone
+    borderRadius: '5%', // Isso cria um ícone circular
+    margin: '5px', // Adicione margem para espaçamento entre os ícones
+  };
+
   return (
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
         <div style={{ position: 'relative' }}>
-          <MdAttachFile onClick={handleAttachFileClick} />
+          <MdAttachFile style={{cursor:'pointer', marginTop:'4px'}} onClick={handleAttachFileClick} />
           {dropdownOpen && (
-            <div style={{ position: 'absolute', top: -80, left: 0, background:'#ffffff', borderRadius:'5px' }}>
-              <MdLink onClick={handleLinkClick} />
-              <MdPhoto onClick={handlePhotoClick} />
+            <div style={{ position: 'absolute', top: -95, left: -5, borderRadius:'5px' }}>
+              <MdLink style={iconeEstilo} onClick={handleLinkClick} />
+              <div style={iconeEstilo}> <MdPhotoLibrary style={iconeEstilo} onClick={handlePhotoClick} /> Photos&Videos </div>
             </div>
           )}
         </div>
         <MdInsertEmoticon style={{cursor:'pointer'}} onClick={toggleEmojiPicker} />
         {emojiPickerVisible && (
-          <div style={{ position: 'absolute', bottom: 100 }}>
+          <div style={{ position: 'absolute', bottom: 112 }}>
           <EmojiPicker
             width={400}
             height={400}
