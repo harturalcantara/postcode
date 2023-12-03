@@ -88,6 +88,32 @@ const Message = ({
     );
   };
 
+  const MessageImgVideoAudio = ( message ) => {
+    const isImage = message.includes(".png") || message.includes(".jpg") || message.includes(".jpeg");
+    const isVideo = message.includes(".mp4") || message.includes(".webm");
+    const isAudio = message.includes(".wav") || message.includes(".mp3");
+  
+    if (isImage) {
+      return <img height={200} src={message} alt="Imagem" />;
+    } else if (isVideo) {
+      return (
+        <video controls width="300">
+          <source src={message} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    } else if (isAudio) {
+      return (
+        <audio controls>
+          <source src={message} type="audio/wav" />
+          Your browser does not support the audio tag.
+        </audio>
+      );
+    } else {
+      return <p>{message}</p>;
+    }
+  };
+
   return (
     <C.Container>
       <C.Line className={userLoggedIn?.email === user ? "me" : ""}>
@@ -110,7 +136,7 @@ const Message = ({
             />
           </C.MessageDate>
 
-          <C.Message>{message.message} </C.Message>
+          <C.Message>  {MessageImgVideoAudio(message.message)} </C.Message>
           {/* ideia,
           passo 1 - uma funcao que ira atualizar o estado da mensagem, se o usuario for para esquerda. Ou seja,
           se não for usuario logado, então ira atualizar o estado da mensagem.

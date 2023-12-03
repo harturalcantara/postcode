@@ -177,13 +177,14 @@ const ChatFooter = ({
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
         <div style={{ position: 'relative' }}>
-          <MdAttachFile style={{cursor:'pointer', marginTop:'4px'}} onClick={handleAttachFileClick} />
+          <MdPhotoLibrary onClick={handlePhotoClick} />
+          {/* <MdAttachFile style={{cursor:'pointer', marginTop:'4px'}} onClick={handleAttachFileClick} />
           {dropdownOpen && (
             <div style={{ position: 'absolute', top: -95, left: -5, borderRadius:'5px' }}>
               <MdLink style={iconeEstilo} onClick={handleLinkClick} />
               <div style={iconeEstilo}> <MdPhotoLibrary style={iconeEstilo} onClick={handlePhotoClick} /> Photos&Videos </div>
             </div>
-          )}
+          )} */}
         </div>
         <MdInsertEmoticon style={{cursor:'pointer'}} onClick={toggleEmojiPicker} />
         {emojiPickerVisible && (
