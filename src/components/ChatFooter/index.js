@@ -9,10 +9,11 @@ import {
   MdLink,
   MdPhotoLibrary,
 } from "react-icons/md";
-import { auth, db } from "../../services/firebase";
+import { auth, db, storage } from "../../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase/compat/app";
 import { v4 as uuidv4 } from "uuid";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const ChatFooter = ({
   editMessage,
@@ -74,9 +75,38 @@ const ChatFooter = ({
     // Adicione aqui a lógica para quando MdLink for clicado
   };
 
+  /* Photo click. */
+
   const handlePhotoClick = () => {
-    // Adicione aqui a lógica para quando MdPhoto for clicado
+    inputRef.current.click();
   };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      // Crie uma referência única para a imagem no Firebase Storage
+      const storageRef = ref(storage, `images/${uuidv4()}_${file.name}`);
+
+      // Faça o upload da imagem para o Firebase Storage
+      await uploadBytes(storageRef, file);
+
+      // Obtenha a URL de download da imagem após o upload
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Adicione a mensagem com a URL da imagem ao Firestore
+      db.collection("chats").doc(chatId).collection("messages").add({
+        id: uuidv4(),
+        message: downloadURL,
+        user: user.email,
+        photoURL: user.photoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        statusMessage: false,
+      });
+    }
+  };
+
+  const inputRef = React.createRef();
 
   const iconeEstilo = {
     display:'flex' , 
@@ -132,6 +162,13 @@ const ChatFooter = ({
             onClick={() => console.log("Start voice recording")}
           />
         )}
+
+        <input
+          type="file"
+          ref={inputRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
       </C.Form>
     </C.Container>
   );
