@@ -117,6 +117,62 @@ const ChatFooter = ({
     margin: '5px', // Adicione margem para espaçamento entre os ícones
   };
 
+  /* AUDIO */
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+
+  const handleAudioRecording = () => {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      setIsRecording(true);
+      const mediaRecorder = new MediaRecorder(stream);
+      const audioChunks = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunks.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+        setAudioBlob(audioBlob);
+        setIsRecording(false);
+      };
+
+      mediaRecorder.start();
+
+      setTimeout(() => {
+        mediaRecorder.stop();
+      }, 6000); // Gravação de 6 segundos (ajuste conforme necessário)
+    });
+  };
+
+  const handleFileAudioChange = async () => {
+    if (audioBlob) {
+      const storageRef = ref(storage, `audio/${uuidv4()}.wav`);
+
+      // Faça o upload do arquivo de áudio para o Firebase Storage
+      await uploadBytes(storageRef, audioBlob);
+
+      // Obtenha a URL de download do arquivo de áudio
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Adicione a mensagem com a URL do áudio ao Firestore
+      db.collection("chats").doc(chatId).collection("messages").add({
+        id: uuidv4(),
+        message: downloadURL,
+        user: user.email,
+        photoURL: user.photoURL,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        statusMessage: false,
+        isAudio: true, // Adicione um indicador para distinguir áudios de outras mensagens
+      });
+
+      // Limpe o blob de áudio após o envio
+      setAudioBlob(null);
+    }
+  };
+
   return (
     <C.Container>
       <C.Form onSubmit={handleSendMessage}>
@@ -159,8 +215,12 @@ const ChatFooter = ({
           <MdSend onClick={handleSendMessage} />
         ) : (
           <MdKeyboardVoice
-            onClick={() => console.log("Start voice recording")}
+            onClick={handleAudioRecording}
+            style={{ color: isRecording ? "red" : "black" }}
           />
+        )}
+        {audioBlob && (
+          <MdSend onClick={handleFileAudioChange} />
         )}
 
         <input
