@@ -85,16 +85,15 @@ const ChatFooter = ({
     const file = e.target.files[0];
 
     if (file) {
-      // Crie uma referência única para a imagem no Firebase Storage
-      const storageRef = ref(storage, `images/${uuidv4()}_${file.name}`);
+      const storageRef = ref(storage, `media/${uuidv4()}_${file.name}`);
 
-      // Faça o upload da imagem para o Firebase Storage
+      // Faça o upload do arquivo para o Firebase Storage
       await uploadBytes(storageRef, file);
 
-      // Obtenha a URL de download da imagem após o upload
+      // Obtenha a URL de download do arquivo
       const downloadURL = await getDownloadURL(storageRef);
 
-      // Adicione a mensagem com a URL da imagem ao Firestore
+      // Adicione a mensagem com a URL do vídeo ao Firestore
       db.collection("chats").doc(chatId).collection("messages").add({
         id: uuidv4(),
         message: downloadURL,
@@ -102,6 +101,7 @@ const ChatFooter = ({
         photoURL: user.photoURL,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         statusMessage: false,
+        isVideo: true, // Adicione um indicador para distinguir vídeos de imagens
       });
     }
   };
@@ -167,6 +167,7 @@ const ChatFooter = ({
           type="file"
           ref={inputRef}
           style={{ display: "none" }}
+          accept="image/*,video/*"  // Permitir upload de imagens e vídeos
           onChange={handleFileChange}
         />
       </C.Form>
