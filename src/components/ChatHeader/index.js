@@ -69,8 +69,8 @@ const ChatHeader = ({
           display: isOpen ? "block" : "none",
           position: "absolute",
           width: "132px",
-          top: "32px", // Ajuste conforme necessário
-          right: "0", // Ajuste conforme necessário
+          top: "32px",
+          right: "0",
           backgroundColor: "#fff",
           border: "2px solid #ccc",
           padding: "16px",

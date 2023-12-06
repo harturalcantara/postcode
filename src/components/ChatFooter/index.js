@@ -3,10 +3,10 @@ import EmojiPicker from "emoji-picker-react";
 import * as C from "./styles";
 import {
   MdSend,
-  MdAttachFile,
+  //MdAttachFile,
   MdInsertEmoticon,
   MdKeyboardVoice,
-  MdLink,
+  //MdLink,
   MdPhotoLibrary,
 } from "react-icons/md";
 import { auth, db, storage } from "../../services/firebase";
@@ -59,22 +59,6 @@ const ChatFooter = ({
     setMessage("");
   };
 
-  /** AttachFile  */
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  const handleAttachFileClick = () => {
-    toggleDropdown();
-    // Adicione aqui qualquer outra lógica que você queira executar quando MdAttachFile for clicado
-  };
-
-  const handleLinkClick = () => {
-    // Adicione aqui a lógica para quando MdLink for clicado
-  };
-
   /* Photo click. */
 
   const handlePhotoClick = () => {
@@ -108,15 +92,6 @@ const ChatFooter = ({
 
   const inputRef = React.createRef();
 
-  const iconeEstilo = {
-    display:'flex' , 
-    alignItems:'center',
-    background: '#ffffff', // Cor de fundo cinza
-    //padding: '5px', // Adicione padding para espaço ao redor do ícone
-    borderRadius: '5%', // Isso cria um ícone circular
-    margin: '5px', // Adicione margem para espaçamento entre os ícones
-  };
-
   /* AUDIO */
   const [audioBlob, setAudioBlob] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -143,7 +118,7 @@ const ChatFooter = ({
 
       setTimeout(() => {
         mediaRecorder.stop();
-      }, 6000); // Gravação de 6 segundos (ajuste conforme necessário)
+      }, 6000);
     });
   };
 
@@ -151,13 +126,10 @@ const ChatFooter = ({
     if (audioBlob) {
       const storageRef = ref(storage, `audio/${uuidv4()}.wav`);
 
-      // Faça o upload do arquivo de áudio para o Firebase Storage
       await uploadBytes(storageRef, audioBlob);
 
-      // Obtenha a URL de download do arquivo de áudio
       const downloadURL = await getDownloadURL(storageRef);
 
-      // Adicione a mensagem com a URL do áudio ao Firestore
       db.collection("chats").doc(chatId).collection("messages").add({
         id: uuidv4(),
         message: downloadURL,
@@ -165,10 +137,9 @@ const ChatFooter = ({
         photoURL: user.photoURL,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         statusMessage: false,
-        isAudio: true, // Adicione um indicador para distinguir áudios de outras mensagens
+        isAudio: true,
       });
 
-      // Limpe o blob de áudio após o envio
       setAudioBlob(null);
     }
   };
@@ -178,13 +149,6 @@ const ChatFooter = ({
       <C.Form onSubmit={handleSendMessage}>
         <div style={{ position: 'relative' }}>
           <MdPhotoLibrary onClick={handlePhotoClick} />
-          {/* <MdAttachFile style={{cursor:'pointer', marginTop:'4px'}} onClick={handleAttachFileClick} />
-          {dropdownOpen && (
-            <div style={{ position: 'absolute', top: -95, left: -5, borderRadius:'5px' }}>
-              <MdLink style={iconeEstilo} onClick={handleLinkClick} />
-              <div style={iconeEstilo}> <MdPhotoLibrary style={iconeEstilo} onClick={handlePhotoClick} /> Photos&Videos </div>
-            </div>
-          )} */}
         </div>
         <MdInsertEmoticon style={{cursor:'pointer'}} onClick={toggleEmojiPicker} />
         {emojiPickerVisible && (
@@ -228,7 +192,7 @@ const ChatFooter = ({
           type="file"
           ref={inputRef}
           style={{ display: "none" }}
-          accept="image/*,video/*"  // Permitir upload de imagens e vídeos
+          accept="image/*,video/*"
           onChange={handleFileChange}
         />
       </C.Form>

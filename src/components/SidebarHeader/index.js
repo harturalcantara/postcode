@@ -44,7 +44,7 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
   const [isCreationOpen, setIsCreationOpen] = useState(false);
   const [emails, setEmails] = useState([]);
 
-  const [userData, setUserData] = useState(null); // State para armazenar os dados do usuário
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -122,29 +122,21 @@ const SidebarHeader = ({ setUserChat, userChat }) => {
   const deleteUserData = async () => {
     console.log("Id do usuario a ser deletado:", userLoggedIn.uid);
     try {
-      /*passo 1 - Pegar todos os chats do qual é o usuario */
-      /*passo 2 - Deletar todas as 'Mensagens' contidas em cada 'Chat' do usuario */
-      /*passo 3 - Deletar o usuario */
 
       const userChatsQuery = await db
         .collection("chats")
         .where("users", "array-contains", user.email)
         .get();
 
-      console.log("Apenas os chats", userChatsQuery.docs);
-
-      /* Passo 2 */
 
       userChatsQuery.forEach(async (chatDoc) => {
         const chatId = chatDoc.id;
-        // Consulta para obter os documentos da subcoleção "messages" para o chat atual
         const messagesQuery = await db
           .collection("chats")
           .doc(chatId)
           .collection("messages")
           .get();
 
-        // Delete all "messages"
         messagesQuery.forEach(async (messageDoc) => {
           await messageDoc.ref.delete();
         });

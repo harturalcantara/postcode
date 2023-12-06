@@ -64,7 +64,7 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
       const messageDocSnapshot = await messageDocRef.get();
   
       const messageData = messageDocSnapshot.data();
-      //console.log('comparando:', messageData.user, user.email );
+
       if (messageData.user !== user.email) {
         await messageDocRef.update({
           statusMessage: true,
@@ -78,7 +78,6 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
     }
   };
 
-  // Função para percorrer as mensagens e atualizar o campo `statusMessage` se o e-mail for igual ao do usuário autenticado
   const updateStatusForAllMessages = () => {
     if (messagesRes?.docs && user) {
       messagesRes.docs.forEach((message) => {
@@ -87,9 +86,7 @@ const ChatBody = ({ setMessageEdit, setEditMode, editMessage, chatId, someState,
     } 
   };
 
-  // Chame a função de atualização de status conforme necessário
   useEffect(() => {
-    // Chamando a função para atualizar o status de todas as mensagens ao carregar o componente
     updateStatusForAllMessages();
   }, [messagesRes, user]);
 
